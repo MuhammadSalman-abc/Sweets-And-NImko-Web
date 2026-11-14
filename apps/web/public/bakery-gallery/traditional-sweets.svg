@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 500" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="90" y1="10" x2="650" y2="490" gradientUnits="userSpaceOnUse"><stop stop-color="#FFF5E7"/><stop offset="1" stop-color="#EBD0AA"/></linearGradient>
+    <linearGradient id="plate" x1="170" y1="270" x2="550" y2="440" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFDF7"/><stop offset=".55" stop-color="#E9D7C1"/><stop offset="1" stop-color="#BB8D62"/></linearGradient>
+    <radialGradient id="jamun" cx="0" cy="0" r="1" gradientTransform="matrix(30 35 -35 30 0 0)" gradientUnits="userSpaceOnUse"><stop stop-color="#CB7935"/><stop offset=".56" stop-color="#90451D"/><stop offset="1" stop-color="#5A2815"/></radialGradient>
+  </defs>
+  <rect width="720" height="500" rx="28" fill="url(#bg)"/>
+  <ellipse cx="360" cy="411" rx="226" ry="31" fill="#77502F" opacity=".17"/>
+  <ellipse cx="360" cy="299" rx="211" ry="108" fill="url(#plate)" stroke="#B78960" stroke-width="8"/>
+  <ellipse cx="360" cy="279" rx="180" ry="82" fill="#FFF9EE" stroke="#E8D8C4" stroke-width="4"/>
+  <g fill="url(#jamun)" stroke="#71351A" stroke-width="3">
+    <circle cx="267" cy="270" r="39"/><circle cx="350" cy="254" r="42"/><circle cx="438" cy="272" r="39"/>
+    <circle cx="309" cy="327" r="37"/><circle cx="396" cy="327" r="38"/><circle cx="485" cy="318" r="31"/>
+    <circle cx="236" cy="326" r="30"/><circle cx="309" cy="206" r="32"/><circle cx="402" cy="204" r="34"/><circle cx="478" cy="220" r="30"/>
+  </g>
+  <g fill="#F8D99A" opacity=".82"><circle cx="252" cy="257" r="5"/><circle cx="336" cy="240" r="5"/><circle cx="423" cy="259" r="5"/><circle cx="294" cy="315" r="5"/><circle cx="382" cy="313" r="5"/><circle cx="296" cy="197" r="4"/><circle cx="391" cy="194" r="4"/></g>
+  <path d="M222 349c48 35 92 52 138 52s90-17 138-52" stroke="#FFFDF7" stroke-width="9" stroke-linecap="round" opacity=".86"/>
+  <path d="M222 133h276" stroke="#B86B36" stroke-width="3" stroke-linecap="round" opacity=".25"/>
+  <path d="M266 111c17 19 29 19 45 0m49 0c17 19 29 19 45 0m47 0c17 19 29 19 45 0" stroke="#A76A3A" stroke-width="5" stroke-linecap="round" opacity=".45"/>
+</svg>

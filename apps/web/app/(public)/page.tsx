@@ -1,10 +1,6 @@
 import type { ReactElement } from "react";
-import { createApiConfiguration, readWebEnvironment } from "@/config";
-import { WorkspaceFoundation } from "@/features/workspace-foundation";
+import { LandingPage } from "@/features/marketing";
 
-const HomePage = (): ReactElement => {
-  const api = createApiConfiguration(readWebEnvironment());
-  return <WorkspaceFoundation apiBaseUrl={api.baseUrl} />;
-};
+const HomePage = (): ReactElement => <LandingPage />;
 
 export default HomePage;

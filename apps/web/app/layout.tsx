@@ -6,7 +6,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: application.name,
-  description: application.description
+  description: application.description,
+  icons: { icon: "/sweet-aroma-logo-original.png", apple: "/sweet-aroma-logo-original.png" }
 };
 
 const RootLayout = ({ children }: RootLayoutProps): ReactElement => (

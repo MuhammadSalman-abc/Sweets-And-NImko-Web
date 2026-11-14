@@ -1,4 +1,4 @@
 export const application = Object.freeze({
-  name: "Workspace",
-  description: "Production-ready web and API foundation"
+  name: "Sweet Aroma | Bakery, Sweets & Nimko Shop",
+  description: "Explore bakery favourites, traditional sweets and crispy nimko at Sweet Aroma."
 });

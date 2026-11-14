@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 500" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="50" y1="0" x2="660" y2="500" gradientUnits="userSpaceOnUse"><stop stop-color="#FFF5E8"/><stop offset="1" stop-color="#EAC79D"/></linearGradient>
+    <linearGradient id="bowl" x1="180" y1="260" x2="535" y2="465" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFDF8"/><stop offset=".48" stop-color="#EBD7BE"/><stop offset="1" stop-color="#B88759"/></linearGradient>
+    <linearGradient id="snack" x1="215" y1="150" x2="490" y2="340" gradientUnits="userSpaceOnUse"><stop stop-color="#F7B74B"/><stop offset=".52" stop-color="#D97824"/><stop offset="1" stop-color="#A84818"/></linearGradient>
+    <clipPath id="inside"><ellipse cx="360" cy="274" rx="193" ry="91"/></clipPath>
+  </defs>
+  <rect width="720" height="500" rx="28" fill="url(#bg)"/>
+  <ellipse cx="360" cy="408" rx="234" ry="34" fill="#80512F" opacity=".17"/>
+  <ellipse cx="360" cy="270" rx="216" ry="105" fill="#9B5528"/>
+  <ellipse cx="360" cy="255" rx="211" ry="101" fill="#FFF9EF"/>
+  <g clip-path="url(#inside)" stroke="url(#snack)" stroke-linecap="round">
+    <path d="M181 267c45-77 64 75 110-8s44 72 88-11 60 74 111-15" stroke-width="14"/>
+    <path d="M192 237c51 54 49-95 96-24s49-44 89 11 56-50 102 8" stroke-width="11"/>
+    <path d="M200 296c29-56 59 56 91-4s56 58 93-4 52 43 101-13" stroke-width="9"/>
+    <path d="M218 206c37 40 51-50 82-2s52-40 83 12 45-34 82 7" stroke-width="8"/>
+    <path d="M225 318c36-31 58 18 91-22s57 29 88-12 49 35 82-9" stroke-width="10"/>
+    <path d="M260 188c34 27 40-29 72 3s43-24 72 8 42-18 72 2" stroke-width="7"/>
+    <path d="M202 254c28-34 49 34 75 3s45 16 68-14 47 31 76 2 48 26 76-7" stroke="#F5D17B" stroke-width="6"/>
+    <circle cx="260" cy="237" r="8" fill="#6F982F" stroke="none"/><circle cx="430" cy="296" r="9" fill="#66852E" stroke="none"/>
+    <circle cx="327" cy="219" r="7" fill="#A7461B" stroke="none"/><circle cx="476" cy="239" r="6" fill="#6F982F" stroke="none"/>
+    <ellipse cx="292" cy="287" rx="12" ry="6" fill="#EBCB79" stroke="none"/><ellipse cx="398" cy="247" rx="10" ry="5" fill="#F4D790" stroke="none"/>
+  </g>
+  <path d="M144 278c12 104 74 170 216 170s204-66 216-170c-50 42-128 62-216 62s-166-20-216-62Z" fill="url(#bowl)" stroke="#A96B39" stroke-width="8"/>
+  <path d="M182 351c44 35 112 53 178 53s134-18 178-53" stroke="#FFFDF7" stroke-width="10" stroke-linecap="round" opacity=".8"/>
+  <ellipse cx="360" cy="270" rx="216" ry="105" stroke="#F7E9D7" stroke-width="9"/>
+</svg>
