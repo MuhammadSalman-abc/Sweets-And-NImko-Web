@@ -13,6 +13,7 @@ const logger = createLogger({
 });
 const database = createMongoDbIntegration({
   logger,
+  allowOffline: config.environment === "development",
   ...(config.mongodbUri ? { uri: config.mongodbUri } : {})
 });
 const app = createApp({ config, logger });

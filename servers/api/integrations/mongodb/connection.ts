@@ -6,6 +6,7 @@ type MongoDbIntegrationDependencies = Readonly<{
   uri?: string;
   logger: Logger;
   client?: MongoClient;
+  allowOffline?: boolean;
 }>;
 
 const mongooseClient: MongoClient = Object.freeze({
@@ -16,7 +17,8 @@ const mongooseClient: MongoClient = Object.freeze({
 export const createMongoDbIntegration = ({
   uri,
   logger,
-  client = mongooseClient
+  client = mongooseClient,
+  allowOffline = false
 }: MongoDbIntegrationDependencies): MongoDbIntegration => {
   if (!uri) {
     return Object.freeze({
@@ -30,8 +32,16 @@ export const createMongoDbIntegration = ({
 
   return Object.freeze({
     connect: async (): Promise<void> => {
-      await client.connect(uri);
-      logger.info("MongoDB connection established.");
+      try {
+        await client.connect(uri);
+        logger.info("MongoDB connection established.");
+      } catch (error) {
+        if (!allowOffline) throw error;
+
+        logger.warn("MongoDB is unavailable; API is starting without persistence.", {
+          errorType: error instanceof Error ? error.name : "UnknownError"
+        });
+      }
     },
     disconnect: async (): Promise<void> => {
       await client.disconnect();
