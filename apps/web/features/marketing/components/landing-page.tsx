@@ -12,7 +12,7 @@ const categories = [
   { title: "Cakes", emoji: "🧁", image: "/cakes/chocolate-cream-sheet-cake.png", alt: "Chocolate cherry sheet cake", href: "/shop/cakes" },
   { title: "Cookies", emoji: "🍪", image: "/cookies/cookie-02.png", alt: "Fresh cookies", href: "/shop/cookies" },
   { title: "Bakery Items", emoji: "🥐", image: "/bakery-gallery/croissants.png", alt: "Fresh croissants", href: "/shop/bakery-items" },
-  { title: "Sweets", emoji: "🍡", image: "/bakery-gallery/traditional-sweets.svg", alt: "Traditional sweets", href: "/shop/sweets" },
+  { title: "Sweets", emoji: "🍡", image: "/sweets/mithai-01.png", alt: "Pistachio-dusted gulab jamun in a serving tray", href: "/shop/sweets" },
   { title: "Nimko", emoji: "🥣", image: "/nimko/nimko-spicy-bowl.png", alt: "Crunchy nimko", href: "/shop/nimko" },
   { title: "Gift Packs", emoji: "🎁", image: "/bakery-gallery/dessert-table.png", alt: "Celebration treats for gifting", href: "/shop/gift-packs" }
 ] as const;
@@ -21,7 +21,7 @@ const products = [
   { name: "Chocolate Cherry Sheet Cake", price: 1800, image: "/cakes/chocolate-cream-sheet-cake.png", alt: "Chocolate drip sheet cake topped with cream swirls and cherries", category: "Cakes" },
   { name: "Chocolate Chunk Cookies", price: 320, image: "/cookies/cookie-02.png", alt: "Freshly baked chunky cookies with chocolate pieces", category: "Cookies" },
   { name: "Fresh Croissants", price: 450, image: "/bakery-gallery/croissants.png", alt: "Fresh almond croissants cooling on a bakery rack", category: "Bakery Items" },
-  { name: "Traditional Sweet Box", price: 950, image: "/bakery-gallery/traditional-sweets.svg", alt: "A plate of traditional gulab jamun sweets", category: "Sweets" },
+  { name: "Pistachio Gulab Jamun", price: 950, image: "/sweets/mithai-01.png", alt: "Pistachio dusted gulab jamun arranged on a serving plate", category: "Sweets" },
   { name: "Mix Nimko", price: 480, image: "/nimko/nimko-spicy-bowl.png", alt: "A bowl of colorful spicy nimko with peanuts", category: "Nimko" },
   { name: "Sweet Aroma Gift Box", price: 1200, image: "/bakery-gallery/dessert-table.png", alt: "A beautifully arranged bakery dessert table", category: "Gift Packs" }
 ] as const;

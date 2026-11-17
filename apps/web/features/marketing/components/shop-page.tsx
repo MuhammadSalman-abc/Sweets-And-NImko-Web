@@ -14,7 +14,7 @@ export const shopCategories = [
   { title: "Cakes", emoji: "🧁", slug: "cakes", image: "/cakes/chocolate-cream-sheet-cake.png", alt: "Chocolate cherry sheet cake from the cake collection" },
   { title: "Cookies", emoji: "🍪", slug: "cookies", image: "/cookies/cookie-02.png", alt: "Fresh chocolate chunk cookies" },
   { title: "Bakery Items", emoji: "🥐", slug: "bakery-items", image: "/bakery-gallery/croissants.png", alt: "Fresh almond croissants" },
-  { title: "Sweets", emoji: "🍡", slug: "sweets", image: "/bakery-gallery/traditional-sweets.svg", alt: "Traditional gulab jamun sweets" },
+  { title: "Sweets", emoji: "🍡", slug: "sweets", image: "/sweets/mithai-19.png", alt: "Fresh orange motichoor ladoos from the sweets collection" },
   { title: "Nimko", emoji: "🥣", slug: "nimko", image: "/nimko/nimko-spicy-bowl.png", alt: "A bowl of crunchy spicy nimko" },
   { title: "Gift Packs", emoji: "🎁", slug: "gift-packs", image: "/bakery-gallery/dessert-table.png", alt: "A celebration table with bakery treats for sharing" }
 ] as const;
@@ -107,7 +107,7 @@ const collections = {
       { name: "Almond Milk Cake", image: "/sweets/mithai-28.png", alt: "Almond milk cake sweets arranged on a white plate" },
       { name: "Kesar Peda", image: "/sweets/mithai-29.png", alt: "Golden kesar pedas served in a glass bowl" },
       { name: "Chocolate Barfi", image: "/sweets/mithai-30.png", alt: "Chocolate and vanilla barfi pieces on a wooden surface" },
-      { name: "Gulab Jamun", image: "/bakery-gallery/traditional-sweets.svg", alt: "Golden gulab jamun traditional sweets" },
+      { name: "Pistachio Gulab Jamun", image: "/sweets/mithai-01.png", alt: "Pistachio dusted gulab jamun arranged on a serving plate" },
       { name: "Sweet Celebration Selection", image: "/bakery-gallery/dessert-table.png", alt: "A colourful table of celebration sweets and cakes" }
     ]
   },
@@ -135,7 +135,7 @@ const collections = {
     heroAlt: "A styled dessert table prepared for sharing and celebration",
     items: [
       { name: "Sweet Aroma Celebration Box", image: "/bakery-gallery/dessert-table.png", alt: "A beautifully arranged bakery dessert table ready for a celebration" },
-      { name: "Traditional Sweet Selection", image: "/bakery-gallery/traditional-sweets.svg", alt: "Traditional sweets arranged for gifting" }
+      { name: "Traditional Sweet Selection", image: "/sweets/mithai-04.png", alt: "Cashew sweets arranged in a traditional mithai tray" }
     ]
   }
 } as const;
@@ -172,7 +172,7 @@ const samplePriceFor = (slug: string, item: ProductItem, index: number): number 
     return 280 + (index % 5) * 40;
   }
   if (slug === "bakery-items") return item.image === "/bakery-gallery/croissants.png" ? 450 : 600;
-  if (slug === "sweets") return item.image === "/bakery-gallery/traditional-sweets.svg" ? 950 : 1200;
+  if (slug === "sweets") return item.image === "/sweets/mithai-01.png" ? 950 : 1200;
   if (slug === "nimko") return item.image === "/nimko/nimko-spicy-bowl.png" ? 480 : 280 + index * 50;
   if (slug === "gift-packs") return item.image === "/bakery-gallery/dessert-table.png" ? 1200 : 950;
   return 1800 + index * 500;
