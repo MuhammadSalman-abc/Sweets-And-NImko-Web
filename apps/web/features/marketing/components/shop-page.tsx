@@ -1,8 +1,12 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactElement } from "react";
-import { ArrowLeft, ArrowRight, Phone } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Phone, ShoppingCart, X } from "lucide-react";
 import CakeCollection from "./cake-collection";
+import { useBakeryCart } from "./use-bakery-cart";
 
 const whatsappUrl = "https://wa.me/923128869242?text=";
 
@@ -14,8 +18,6 @@ export const shopCategories = [
   { title: "Nimko", emoji: "🥣", slug: "nimko", image: "/nimko/nimko-spicy-bowl.png", alt: "A bowl of crunchy spicy nimko" },
   { title: "Gift Packs", emoji: "🎁", slug: "gift-packs", image: "/bakery-gallery/dessert-table.png", alt: "A celebration table with bakery treats for sharing" }
 ] as const;
-export const shopCategorySlugs = shopCategories.map(({ slug }) => slug);
-
 const collections = {
   cookies: {
     title: "Cookies",
@@ -133,14 +135,41 @@ const CategoryHeader = ({ current }: { current?: string }): ReactElement => (
   </header>
 );
 
-const ProductGrid = ({ items }: { items: readonly ProductItem[] }): ReactElement => (
-  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
-    {items.map((item) => <article key={item.image} className="group overflow-hidden rounded-[14px] border border-[#eadbc7] bg-[#fffaf2] shadow-[0_18px_38px_-30px_rgba(67,37,18,0.5)] transition duration-300 hover:-translate-y-1 hover:border-[#c8a363] hover:shadow-[0_24px_44px_-28px_rgba(67,37,18,0.35)]">
-      <div className="relative aspect-[4/3] overflow-hidden bg-[#f1e5d3]"><Image src={item.image} alt={item.alt} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw" className="object-cover transition duration-500 group-hover:scale-105" /><span className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/25 to-transparent" /></div>
-      <div className="flex min-h-[88px] items-center justify-between gap-2 px-3.5 py-3"><div className="min-w-0"><p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#a0785b]">Sweet Aroma</p><h2 className="mt-1 font-serif text-[12px] font-bold leading-4 text-[#432819] sm:text-sm">{item.name}</h2></div><a aria-label={`Ask about ${item.name}`} href={`${whatsappUrl}${encodeURIComponent(`Hi Sweet Aroma, is ${item.name} available?`)}`} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-1 rounded-md bg-[#3a2418] px-3 py-2 text-[9px] font-bold uppercase tracking-[0.08em] text-white transition hover:bg-[#59371f]">Ask <ArrowRight className="size-3 text-[#e1ad58]" /></a></div>
-    </article>)}
-  </div>
-);
+const samplePriceFor = (slug: string, item: ProductItem, index: number): number => {
+  if (slug === "cookies") {
+    if (item.image === "/cookies/cookie-02.png") return 320;
+    if (item.image === "/cookies/cookie-01.png") return 280;
+    return 280 + (index % 5) * 40;
+  }
+  if (slug === "bakery-items") return item.image === "/bakery-gallery/croissants.png" ? 450 : 600;
+  if (slug === "sweets") return item.image === "/bakery-gallery/traditional-sweets.svg" ? 950 : 1200;
+  if (slug === "nimko") return item.image === "/nimko/nimko-spicy-bowl.png" ? 480 : 280 + index * 50;
+  if (slug === "gift-packs") return item.image === "/bakery-gallery/dessert-table.png" ? 1200 : 950;
+  return 1800 + index * 500;
+};
+
+const ProductGrid = ({ items, slug }: { items: readonly ProductItem[]; slug: string }): ReactElement => {
+  const cart = useBakeryCart();
+  const [previewItem, setPreviewItem] = useState<ProductItem | null>(null);
+  const orderText = encodeURIComponent(`Hi Sweet Aroma, I would like to order: ${cart.items.map((entry) => `${entry.name} x${entry.quantity}`).join(", ")}. Sample menu total: Rs. ${cart.total.toLocaleString("en-PK")} (please confirm).`);
+
+  return <>
+    <p className="mb-4 text-right text-[10px] font-medium text-[#8b7865]">Sample menu prices · please confirm before ordering</p>
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
+      {items.map((item, index) => {
+        const price = samplePriceFor(slug, item, index);
+        const id = `${slug}:${item.image}`;
+        const added = cart.items.some((entry) => entry.id === id);
+        return <article key={item.image} className="group overflow-hidden rounded-[14px] border border-[#eadbc7] bg-[#fffaf2] shadow-[0_18px_38px_-30px_rgba(67,37,18,0.5)] transition duration-300 hover:-translate-y-1 hover:border-[#c8a363] hover:shadow-[0_24px_44px_-28px_rgba(67,37,18,0.35)]">
+          <button type="button" onClick={() => setPreviewItem(item)} aria-label={`View full-size image of ${item.name}`} className="group/image relative block aspect-[4/3] w-full overflow-hidden bg-[#f1e5d3] text-left"><Image src={item.image} alt={item.alt} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw" className="object-cover transition duration-500 group-hover/image:scale-105" /><span className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/25 to-transparent" /><span className="absolute bottom-2 right-2 rounded-full bg-white/90 px-2.5 py-1.5 text-[9px] font-semibold text-[#542a14] opacity-0 shadow-sm transition group-hover/image:opacity-100">View full image</span></button>
+          <div className="px-3.5 py-3 sm:px-4"><p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#a0785b]">Sweet Aroma</p><h2 className="mt-1 min-h-9 font-serif text-[12px] font-bold leading-4 text-[#432819] sm:text-sm">{item.name}</h2><div className="mt-2 flex items-center justify-between gap-2"><p className="font-bold text-[#80551e]">Rs. {price.toLocaleString("en-PK")}</p><button type="button" onClick={() => cart.addItem({ id, name: item.name, price, image: item.image, category: slug })} className="inline-flex h-9 items-center gap-1.5 rounded-md bg-[#3a2418] px-3 text-[10px] font-bold uppercase tracking-[0.06em] text-white transition hover:bg-[#59371f]">{added ? <Check className="size-3.5 text-[#e1ad58]" /> : <ShoppingCart className="size-3.5 text-[#e1ad58]" />}{added ? `Add (${cart.items.find((entry) => entry.id === id)?.quantity ?? 0})` : "Add"}</button></div></div>
+        </article>;
+      })}
+    </div>
+    {cart.count > 0 && <aside className="fixed inset-x-4 bottom-4 z-40 mx-auto flex max-w-[720px] items-center justify-between gap-4 rounded-2xl border border-[#e8d5bf] bg-[#fffaf2] px-4 py-3 shadow-[0_18px_55px_-18px_rgba(43,23,13,0.55)] sm:inset-x-6 sm:px-5"><div><p className="text-xs font-bold text-[#542a14]">{cart.count} {cart.count === 1 ? "item" : "items"} in your cart</p><p className="mt-0.5 text-[10px] text-[#806c55]">Sample total: Rs. {cart.total.toLocaleString("en-PK")}</p></div><a href={`${whatsappUrl}${orderText}`} className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-[#3a2418] px-4 py-3 text-xs font-bold text-white transition hover:bg-[#59371f]">Continue on WhatsApp <ArrowRight className="size-4 text-[#e1ad58]" /></a></aside>}
+    {previewItem && <div className="fixed inset-0 z-50 grid place-items-center bg-[#1b110b]/90 p-4 sm:p-8" role="dialog" aria-modal="true" aria-label={previewItem.name} onClick={() => setPreviewItem(null)}><button type="button" aria-label="Close image preview" onClick={() => setPreviewItem(null)} className="absolute right-4 top-4 grid size-11 place-items-center rounded-full border border-white/30 bg-black/30 text-white transition hover:bg-white/15 sm:right-8 sm:top-8"><X className="size-5" /></button><div className="relative h-[min(82vh,900px)] w-full max-w-[1280px]" onClick={(event) => event.stopPropagation()}><Image src={previewItem.image} alt={previewItem.alt} fill sizes="100vw" className="object-contain" /><p className="absolute inset-x-0 -bottom-8 text-center font-serif text-sm font-semibold text-white sm:-bottom-9 sm:text-base">{previewItem.name}</p></div></div>}
+  </>;
+};
 
 const ShopHomePage = (): ReactElement => (
     <main className="min-h-screen bg-[#f9f2e7] text-[#392113]">
@@ -171,7 +200,7 @@ const CategoryPage = ({ slug }: { slug: string }): ReactElement => {
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(37,20,12,0.86)_0%,rgba(53,29,16,0.67)_46%,rgba(61,30,12,0.13)_100%)]" />
         <div className="relative mx-auto flex min-h-[240px] max-w-[1200px] flex-col justify-center sm:min-h-[270px]"><Link href="/shop" className="inline-flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/12 px-3.5 py-2 text-xs font-semibold text-white backdrop-blur-sm transition hover:bg-white/25"><ArrowLeft className="size-3.5" /> All collections</Link><p className="mt-6 text-[10px] font-bold uppercase tracking-[0.16em] text-[#ffe1bd]">{collection.eyebrow}</p><h1 className="mt-2 font-serif text-[42px] font-bold tracking-[-0.045em] text-white drop-shadow-sm sm:text-[58px]">{collection.title}</h1><p className="mt-3 max-w-[640px] text-sm leading-6 text-white/90 sm:text-base">{collection.description}</p></div>
       </section>
-      <section className="mx-auto max-w-[1400px] px-5 py-9 sm:px-8 sm:py-14 lg:px-10"><div className="mb-5 flex items-baseline justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[0.17em] text-[#a36337]">Freshly selected</p><h2 className="mt-1 font-serif text-[27px] font-bold tracking-[-0.04em] text-[#542a14]">The collection</h2></div><span className="text-[10px] text-[#8b7865]">{collection.items.length} items</span></div><ProductGrid items={collection.items} /></section>
+      <section className="mx-auto max-w-[1400px] px-5 py-9 sm:px-8 sm:py-14 lg:px-10"><div className="mb-5 flex items-baseline justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[0.17em] text-[#a36337]">Freshly selected</p><h2 className="mt-1 font-serif text-[27px] font-bold tracking-[-0.04em] text-[#542a14]">The collection</h2></div><span className="text-[10px] text-[#8b7865]">{collection.items.length} items</span></div><ProductGrid items={collection.items} slug={slug} /></section>
       <footer className="bg-[#28170f] py-6 text-center text-xs text-white/70">Want to order? <a className="font-bold text-[#e7b65e]" href={`${whatsappUrl}${encodeURIComponent(`Hi Sweet Aroma, please share details for ${collection.title}.`)}`} target="_blank" rel="noreferrer">Message Sweet Aroma <ArrowRight className="inline size-3.5" /></a><p className="mt-3 text-[10px] text-white/45">© 2026 Sweet Aroma Bakery &amp; Sweets</p></footer>
     </main>
   );

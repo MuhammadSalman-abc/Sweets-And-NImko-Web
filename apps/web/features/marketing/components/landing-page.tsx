@@ -5,6 +5,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, ChevronDown, Clock3, Heart, House, Menu, Minus, Music2, Phone, Plus, Search, ShieldCheck, ShoppingBag, ShoppingCart, Truck, UserRound, X } from "lucide-react";
+import { useBakeryCart } from "./use-bakery-cart";
 const whatsappUrl = "https://wa.me/923128869242?text=Hi%20Sweet%20Aroma%2C%20I%27d%20like%20to%20place%20an%20order.";
 
 const categories = [
@@ -27,44 +28,37 @@ const products = [
 
 type Product = (typeof products)[number];
 
-const ProductCard = ({ product, onAdd }: { product: Product; onAdd: (product: Product) => void }): ReactElement => (
+const ProductCard = ({ product, onAdd, onPreview, quantity }: { product: Product; onAdd: (product: Product) => void; onPreview: (product: Product) => void; quantity: number }): ReactElement => (
   <article className="group overflow-hidden rounded-[14px] border border-[#eadbc7] bg-[#fffaf2] shadow-[0_18px_38px_-30px_rgba(67,37,18,0.5)] transition duration-300 hover:-translate-y-1 hover:border-[#c8a363] hover:shadow-[0_24px_44px_-28px_rgba(67,37,18,0.35)]">
-    <Link href={`/shop/${product.category.toLowerCase().replaceAll(" ", "-")}`} aria-label={`Browse ${product.category}`} className="relative block aspect-[4/3] w-full overflow-hidden bg-[#f1e5d3] text-left">
+    <button type="button" onClick={() => onPreview(product)} aria-label={`View full-size image of ${product.name}`} className="group/image relative block aspect-[4/3] w-full overflow-hidden bg-[#f1e5d3] text-left">
       <Image src={product.image} alt={product.alt} fill sizes="(max-width: 640px) 50vw, (max-width: 1200px) 25vw, 240px" className="object-cover transition duration-500 group-hover:scale-105" />
       <span className="absolute left-3 top-3 bg-[#fff8ec]/95 px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-[#76572f] shadow-sm">{product.category}</span>
-    </Link>
+      <span className="absolute bottom-3 right-3 rounded-full bg-white/90 px-2.5 py-1.5 text-[9px] font-semibold text-[#542a14] opacity-0 shadow-sm transition group-hover/image:opacity-100">View full image</span>
+    </button>
     <div className="px-3.5 pb-4 pt-3 sm:px-4">
       <Link href={`/shop/${product.category.toLowerCase().replaceAll(" ", "-")}`} className="block min-h-9 text-left font-serif text-[14px] font-bold leading-5 text-[#3f2414] hover:text-[#8d4a22] sm:text-[16px]">{product.name}</Link>
       <div className="mt-2 flex items-center justify-between gap-2"><p className="text-[15px] font-bold text-[#80551e]">Rs. {product.price.toLocaleString("en-PK")}</p><span className="text-[9px] font-medium text-[#927e6b]">Fresh selection</span></div>
-      <div className="mt-3 flex items-center gap-2"><Link href={`/shop/${product.category.toLowerCase().replaceAll(" ", "-")}`} className="inline-flex h-9 flex-1 items-center justify-center gap-1 rounded-md bg-[#3a2418] px-3 text-[9px] font-bold uppercase tracking-[0.1em] text-white transition hover:bg-[#59371f] sm:text-[10px]">Explore <ArrowRight className="size-3.5 text-[#e1ad58]" /></Link><button type="button" aria-label={`Add ${product.name} to cart`} onClick={() => onAdd(product)} className="inline-flex h-9 items-center justify-center gap-1.5 rounded-md border border-[#d8c4a7] px-3 text-[9px] font-bold uppercase tracking-[0.08em] text-[#633f1c] transition hover:border-[#80551e] hover:bg-[#f7ecd9] sm:text-[10px]"><ShoppingCart className="size-3.5" /> Add</button></div>
+      <div className="mt-3 flex items-center gap-2"><Link href={`/shop/${product.category.toLowerCase().replaceAll(" ", "-")}`} className="inline-flex h-9 flex-1 items-center justify-center gap-1 rounded-md bg-[#3a2418] px-3 text-[9px] font-bold uppercase tracking-[0.1em] text-white transition hover:bg-[#59371f] sm:text-[10px]">Explore <ArrowRight className="size-3.5 text-[#e1ad58]" /></Link><button type="button" aria-label={`Add ${product.name} to cart`} onClick={() => onAdd(product)} className="inline-flex h-9 items-center justify-center gap-1.5 rounded-md border border-[#d8c4a7] px-3 text-[9px] font-bold uppercase tracking-[0.08em] text-[#633f1c] transition hover:border-[#80551e] hover:bg-[#f7ecd9] sm:text-[10px]"><ShoppingCart className="size-3.5" /> {quantity > 0 ? `Add (${quantity})` : "Add"}</button></div>
     </div>
   </article>
 );
 
 const BakeryHomePage = (): ReactElement => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [cart, setCart] = useState<ReadonlyArray<Product>>([]);
+  const cart = useBakeryCart();
   const [cartOpen, setCartOpen] = useState(false);
+  const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchQuery.trim().toLowerCase())
   );
-  const cartItems = products.flatMap((product) => {
-    const quantity = cart.filter((item) => item.name === product.name).length;
-    return quantity ? [{ product, quantity }] : [];
-  });
-  const cartTotal = cart.reduce((total, product) => total + product.price, 0);
-  const addToCart = (product: Product): void => setCart((current) => [...current, product]);
-  const removeFromCart = (product: Product): void => setCart((current) => {
-    const index = current.findIndex((item) => item.name === product.name);
-    return index < 0 ? current : current.filter((_, itemIndex) => itemIndex !== index);
-  });
-  const checkoutUrl = `${whatsappUrl}%20My%20order:%20${encodeURIComponent(cartItems.map(({ product, quantity }) => `${product.name} x${quantity}`).join(", "))}%20—%20Total%20Rs.%20${cartTotal.toLocaleString("en-PK")}.`;
+  const addToCart = (product: Product): void => cart.addItem({ id: `${product.category.toLowerCase().replaceAll(" ", "-")}:${product.image}`, name: product.name, price: product.price, image: product.image, category: product.category });
+  const checkoutUrl = `${whatsappUrl}%20My%20order:%20${encodeURIComponent(cart.items.map(({ name, quantity }) => `${name} x${quantity}`).join(", "))}%20—%20Total%20Rs.%20${cart.total.toLocaleString("en-PK")}.`;
 
   return (
   <main className="overflow-hidden bg-[#f9f2e7] text-[#392113]">
     <div className="bg-[#28170f] text-white">
       <div className="mx-auto flex min-h-10 max-w-[1440px] flex-wrap items-center justify-between gap-x-6 gap-y-1 px-4 py-2 text-[10px] font-semibold sm:px-7 sm:text-xs lg:px-10">
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-1 sm:gap-x-8"><span className="inline-flex items-center gap-2"><Truck className="size-3.5" /> Free delivery available — ask us on WhatsApp</span><span className="hidden h-4 w-px bg-white/40 sm:block" /><span className="inline-flex items-center gap-2"><Heart className="size-3.5 fill-[#f4d5b4] text-[#f4d5b4]" /> Freshly baked, always fresh!</span></div>
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-1 sm:gap-x-8"><span className="inline-flex items-center gap-2"><Truck className="size-3.5" /> Ask us about delivery options</span><span className="hidden h-4 w-px bg-white/40 sm:block" /><span className="inline-flex items-center gap-2"><Heart className="size-3.5 fill-[#f4d5b4] text-[#f4d5b4]" /> Freshly baked, always fresh!</span></div>
         <div className="flex items-center gap-3 sm:gap-4"><Link href="/contact" className="hidden text-white/90 hover:text-white sm:inline">Order Help</Link><Link href="/contact" className="inline-flex items-center gap-1.5 text-white/90 hover:text-white"><Phone className="size-3" /> Help | Contact</Link><span className="hidden items-center gap-2 border-l border-white/35 pl-3 sm:inline-flex" aria-label="Social media"><span className="text-sm font-bold">f</span><span className="text-[17px] leading-none">◎</span><Music2 className="size-4" /></span></div>
       </div>
     </div>
@@ -86,8 +80,8 @@ const BakeryHomePage = (): ReactElement => {
         <div className="flex items-center gap-2">
           <a aria-label="Contact Sweet Aroma" href={whatsappUrl} target="_blank" rel="noreferrer" className="hidden size-10 items-center justify-center rounded-full text-[#f7ead5] transition hover:bg-white/10 sm:flex"><UserRound className="size-6" /></a>
           <div className="relative">
-            <button type="button" aria-label={`Shopping cart with ${cart.length} items`} aria-expanded={cartOpen} onClick={() => setCartOpen((open) => !open)} className="relative grid size-10 place-items-center text-[#f7ead5] transition hover:text-[#edbd69]"><ShoppingCart className="size-6" /><span className="absolute right-0 top-0 grid size-[17px] place-items-center rounded-full bg-[#c44631] text-[9px] font-bold text-white">{cart.length}</span></button>
-            {cartOpen && <aside className="absolute right-0 top-12 z-50 w-[min(330px,calc(100vw-2rem))] rounded-2xl border border-[#efdfce] bg-white p-4 shadow-[0_20px_60px_-22px_rgba(68,37,18,0.35)]"><div className="flex items-center justify-between"><p className="text-sm font-bold text-[#542a14]">Your cart <span className="ml-1 text-xs font-medium text-[#887766]">({cart.length})</span></p><button type="button" aria-label="Close cart" onClick={() => setCartOpen(false)} className="grid size-7 place-items-center rounded-full hover:bg-[#f8ecdc]"><X className="size-4" /></button></div>{cart.length === 0 ? <p className="py-7 text-center text-xs text-[#887766]">Your cart is empty. Add a bakery favourite to get started.</p> : <><ul className="my-3 max-h-52 divide-y divide-[#f1e5d9] overflow-auto">{cartItems.map(({ product, quantity }) => <li key={product.name} className="flex items-center justify-between gap-3 py-2.5 text-xs"><div className="min-w-0"><p className="truncate font-semibold text-[#58351f]">{product.name}</p><p className="mt-0.5 text-[#b52218]">Rs. {product.price.toLocaleString("en-PK")} each</p></div><div className="flex shrink-0 items-center gap-1 rounded-full border border-[#ead7c4] p-0.5"><button type="button" aria-label={`Remove one ${product.name}`} onClick={() => removeFromCart(product)} className="grid size-6 place-items-center rounded-full hover:bg-[#f8ecdc]"><Minus className="size-3" /></button><span className="w-4 text-center font-bold">{quantity}</span><button type="button" aria-label={`Add one ${product.name}`} onClick={() => addToCart(product)} className="grid size-6 place-items-center rounded-full hover:bg-[#f8ecdc]"><Plus className="size-3" /></button></div></li>)}</ul><div className="flex justify-between border-t border-[#ead7c4] py-3 text-xs font-bold"><span>Total</span><span>Rs. {cartTotal.toLocaleString("en-PK")}</span></div><a href={checkoutUrl} target="_blank" rel="noreferrer" className="flex h-10 items-center justify-center gap-2 rounded-full bg-[#713511] text-xs font-bold text-white hover:bg-[#54240c]">Send order on WhatsApp <ArrowRight className="size-3.5" /></a></>}</aside>}
+            <button type="button" aria-label={`Shopping cart with ${cart.count} items`} aria-expanded={cartOpen} onClick={() => setCartOpen((open) => !open)} className="relative grid size-10 place-items-center text-[#f7ead5] transition hover:text-[#edbd69]"><ShoppingCart className="size-6" /><span className="absolute right-0 top-0 grid size-[17px] place-items-center rounded-full bg-[#c44631] text-[9px] font-bold text-white">{cart.count}</span></button>
+            {cartOpen && <aside className="absolute right-0 top-12 z-50 w-[min(330px,calc(100vw-2rem))] rounded-2xl border border-[#efdfce] bg-white p-4 text-[#542a14] shadow-[0_20px_60px_-22px_rgba(68,37,18,0.35)]"><div className="flex items-center justify-between"><p className="text-sm font-bold text-[#542a14]">Your cart <span className="ml-1 text-xs font-medium text-[#887766]">({cart.count})</span></p><button type="button" aria-label="Close cart" onClick={() => setCartOpen(false)} className="grid size-7 place-items-center rounded-full text-[#806c55] hover:bg-[#f8ecdc]"><X className="size-4" /></button></div>{cart.count === 0 ? <p className="py-7 text-center text-xs text-[#887766]">Your cart is empty. Add a bakery favourite to get started.</p> : <><ul className="my-3 max-h-52 divide-y divide-[#f1e5d9] overflow-auto">{cart.items.map((entry) => <li key={entry.id} className="flex items-center justify-between gap-3 py-2.5 text-xs"><div className="min-w-0"><p className="truncate font-semibold text-[#58351f]">{entry.name}</p><p className="mt-0.5 text-[#b52218]">Rs. {entry.price.toLocaleString("en-PK")} each</p></div><div className="flex shrink-0 items-center gap-1 rounded-full border border-[#ead7c4] bg-[#fffaf2] p-0.5 text-[#542a14]"><button type="button" aria-label={`Remove one ${entry.name}`} onClick={() => cart.removeItem(entry.id)} className="grid size-6 place-items-center rounded-full text-[#542a14] hover:bg-[#f8ecdc]"><Minus className="size-3" /></button><span className="w-4 text-center font-bold text-[#542a14]">{entry.quantity}</span><button type="button" aria-label={`Add one ${entry.name}`} onClick={() => cart.addItem(entry)} className="grid size-6 place-items-center rounded-full text-[#542a14] hover:bg-[#f8ecdc]"><Plus className="size-3" /></button></div></li>)}</ul><div className="flex justify-between border-t border-[#ead7c4] py-3 text-xs font-bold text-[#542a14]"><span>Total</span><span>Rs. {cart.total.toLocaleString("en-PK")}</span></div><a href={checkoutUrl} className="flex h-10 items-center justify-center gap-2 rounded-full bg-[#713511] text-xs font-bold text-white hover:bg-[#54240c]">Send order on WhatsApp <ArrowRight className="size-3.5" /></a></>}</aside>}
           </div>
           <Link aria-label="Open bakery menu" href="/shop" className="grid size-10 place-items-center rounded-full bg-[#dfa853] text-[#2d1a10] xl:hidden"><Menu className="size-5" /></Link>
         </div>
@@ -129,7 +123,7 @@ const BakeryHomePage = (): ReactElement => {
     <section id="products" className="scroll-mt-6 bg-[#f9f2e7] px-4 py-12 sm:px-7 sm:py-16 lg:px-10 lg:py-20">
       <div className="mx-auto max-w-[1440px]">
         <div className="mb-7 flex flex-wrap items-end justify-between gap-4 sm:mb-9"><div><p className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.22em] text-[#b18442] before:h-px before:w-8 before:bg-[#d7a655]">From our kitchen</p><h2 className="mt-3 font-serif text-[30px] font-bold leading-tight tracking-[-0.035em] text-[#382218] sm:text-[42px]">{searchQuery ? "Search results" : "Popular picks"}</h2></div><Link href="/shop" className="inline-flex items-center gap-2 pb-1 text-[10px] font-bold uppercase tracking-[0.13em] text-[#76572f] hover:text-[#ad7d34]">Browse the menu <ArrowRight className="size-4" /></Link></div>
-        {filteredProducts.length ? <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5">{filteredProducts.map((product) => <ProductCard key={product.name} product={product} onAdd={addToCart} />)}</div> : <div className="rounded-xl border border-[#e7d7c0] bg-[#fffaf2] px-5 py-10 text-center"><p className="font-serif text-lg font-bold text-[#542a14]">No matching products found</p><p className="mt-1 text-xs text-[#887766]">Try searching for cakes, cookies, pastries, sweets or nimko.</p></div>}
+        {filteredProducts.length ? <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5">{filteredProducts.map((product) => <ProductCard key={product.name} product={product} onAdd={addToCart} onPreview={setPreviewProduct} quantity={cart.items.find((entry) => entry.id === `${product.category.toLowerCase().replaceAll(" ", "-")}:${product.image}`)?.quantity ?? 0} />)}</div> : <div className="rounded-xl border border-[#e7d7c0] bg-[#fffaf2] px-5 py-10 text-center"><p className="font-serif text-lg font-bold text-[#542a14]">No matching products found</p><p className="mt-1 text-xs text-[#887766]">Try searching for cakes, cookies, pastries, sweets or nimko.</p></div>}
       </div>
     </section>
 
@@ -144,6 +138,8 @@ const BakeryHomePage = (): ReactElement => {
       <Image src="/bakery-gallery/croissants.png" alt="Golden bakery croissants fresh from the oven" fill sizes="100vw" className="absolute inset-0 -z-20 object-cover object-center" /><div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(40,23,15,0.88),rgba(40,23,15,0.55))]" />
       <div className="mx-auto flex max-w-[1320px] flex-col items-start justify-between gap-6 sm:flex-row sm:items-center"><div className="max-w-[750px]"><p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#e6b25f]">Planning a celebration?</p><h2 className="mt-3 font-serif text-[30px] font-bold leading-tight sm:text-[42px]">Let’s find the right cake for your day.</h2><p className="mt-3 max-w-[640px] text-sm leading-6 text-white/80">Share the flavour, size and design you have in mind. We’ll help you discuss the details.</p></div><a href={`${whatsappUrl}%20I%27d%20like%20to%20ask%20about%20a%20celebration%20cake.`} target="_blank" rel="noreferrer" className="inline-flex h-12 shrink-0 items-center gap-2 rounded-md bg-[#dfa853] px-5 text-[10px] font-bold uppercase tracking-[0.1em] text-[#2d1a10] transition hover:bg-[#efc477]">Ask about a cake <ArrowRight className="size-4" /></a></div>
     </section>
+
+    {previewProduct && <div className="fixed inset-0 z-50 grid place-items-center bg-[#1b110b]/90 p-4 sm:p-8" role="dialog" aria-modal="true" aria-label={previewProduct.name} onClick={() => setPreviewProduct(null)}><button type="button" aria-label="Close image preview" onClick={() => setPreviewProduct(null)} className="absolute right-4 top-4 grid size-11 place-items-center rounded-full border border-white/30 bg-black/30 text-white transition hover:bg-white/15 sm:right-8 sm:top-8"><X className="size-5" /></button><div className="relative h-[min(82vh,900px)] w-full max-w-[1280px]" onClick={(event) => event.stopPropagation()}><Image src={previewProduct.image} alt={previewProduct.alt} fill sizes="100vw" className="object-contain" /><p className="absolute inset-x-0 -bottom-8 text-center font-serif text-sm font-semibold text-white sm:-bottom-9 sm:text-base">{previewProduct.name}</p></div></div>}
 
     <footer id="contact" className="bg-[#28170f] text-white">
       <div className="mx-auto grid max-w-[1440px] gap-9 border-b border-white/10 px-5 py-10 sm:grid-cols-2 sm:px-8 sm:py-14 lg:grid-cols-[1.2fr_0.8fr_0.8fr_1fr] lg:px-10">
