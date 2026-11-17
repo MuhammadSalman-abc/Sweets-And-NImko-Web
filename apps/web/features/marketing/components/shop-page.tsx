@@ -1,18 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactElement } from "react";
-import { ArrowLeft, ArrowRight, Phone, ShoppingBag } from "lucide-react";
+import { ArrowLeft, ArrowRight, Phone } from "lucide-react";
 import CakeCollection from "./cake-collection";
 
 const whatsappUrl = "https://wa.me/923128869242?text=";
 
 export const shopCategories = [
-  { title: "Cakes", emoji: "🧁", slug: "cakes" },
-  { title: "Cookies", emoji: "🍪", slug: "cookies" },
-  { title: "Bakery Items", emoji: "🥐", slug: "bakery-items" },
-  { title: "Sweets", emoji: "🍡", slug: "sweets" },
-  { title: "Nimko", emoji: "🥣", slug: "nimko" },
-  { title: "Gift Packs", emoji: "🎁", slug: "gift-packs" }
+  { title: "Cakes", emoji: "🧁", slug: "cakes", image: "/cakes/chocolate-cream-sheet-cake.png", alt: "Chocolate cherry sheet cake from the cake collection" },
+  { title: "Cookies", emoji: "🍪", slug: "cookies", image: "/cookies/cookie-02.png", alt: "Fresh chocolate chunk cookies" },
+  { title: "Bakery Items", emoji: "🥐", slug: "bakery-items", image: "/bakery-gallery/croissants.png", alt: "Fresh almond croissants" },
+  { title: "Sweets", emoji: "🍡", slug: "sweets", image: "/bakery-gallery/traditional-sweets.svg", alt: "Traditional gulab jamun sweets" },
+  { title: "Nimko", emoji: "🥣", slug: "nimko", image: "/nimko/nimko-spicy-bowl.png", alt: "A bowl of crunchy spicy nimko" },
+  { title: "Gift Packs", emoji: "🎁", slug: "gift-packs", image: "/bakery-gallery/dessert-table.png", alt: "A celebration table with bakery treats for sharing" }
 ] as const;
 export const shopCategorySlugs = shopCategories.map(({ slug }) => slug);
 
@@ -21,6 +21,8 @@ const collections = {
     title: "Cookies",
     eyebrow: "Freshly baked favourites",
     description: "Explore chocolate chip, jam-filled, butter cookies and classic tea biscuits.",
+    heroImage: "/cookies/cookie-20.png",
+    heroAlt: "A beautiful assortment of freshly baked cookies",
     items: [
       { name: "Jam Heart Cookies", image: "/cookies/cookie-01.png", alt: "Heart and star shaped jam filled cookies dusted with sugar" },
       { name: "Chocolate Chunk Cookies", image: "/cookies/cookie-02.png", alt: "Freshly baked chunky cookies with chocolate pieces" },
@@ -59,6 +61,8 @@ const collections = {
     title: "Bakery Items",
     eyebrow: "Fresh from the oven",
     description: "Golden croissants and bakery-counter favourites, prepared fresh with care.",
+    heroImage: "/bakery-gallery/croissants.png",
+    heroAlt: "Fresh golden almond croissants cooling on a rack",
     items: [
       { name: "Almond Croissants", image: "/bakery-gallery/croissants.png", alt: "Fresh almond croissants cooling on a bakery rack" },
       { name: "Fresh Pastry Selection", image: "/bakery-gallery/bakery-display.png", alt: "Pastries arranged beneath glass cake stands" }
@@ -68,6 +72,8 @@ const collections = {
     title: "Traditional Sweets",
     eyebrow: "A little sweetness for every occasion",
     description: "Classic mithai favourites for sharing, celebrations and thoughtful gifting.",
+    heroImage: "/bakery-gallery/sweet-aroma-hero-display.png",
+    heroAlt: "Traditional mithai and bakery treats ready to share",
     items: [
       { name: "Gulab Jamun", image: "/bakery-gallery/traditional-sweets.svg", alt: "Golden gulab jamun traditional sweets" },
       { name: "Sweet Celebration Selection", image: "/bakery-gallery/dessert-table.png", alt: "A colourful table of celebration sweets and cakes" }
@@ -77,6 +83,8 @@ const collections = {
     title: "Crispy Nimko",
     eyebrow: "Savoury favourites",
     description: "Pick a crunchy mix and message us to ask about available pack sizes.",
+    heroImage: "/nimko/nimko-spicy-bowl.png",
+    heroAlt: "A bowl of colorful crunchy spicy nimko",
     items: [
       { name: "Golden Rice Nimko", image: "/nimko/nimko-spicy-rice.png", alt: "Golden crispy rice nimko on a white plate" },
       { name: "Classic Nimko Mix", image: "/nimko/nimko-mix-pouch.png", alt: "Traditional assorted nimko mix in a serving pouch" },
@@ -91,6 +99,8 @@ const collections = {
     title: "Gift Packs",
     eyebrow: "Made for sharing",
     description: "Send a sweet surprise. Ask us about a gift selection for your occasion.",
+    heroImage: "/bakery-gallery/dessert-table.png",
+    heroAlt: "A styled dessert table prepared for sharing and celebration",
     items: [
       { name: "Sweet Aroma Celebration Box", image: "/bakery-gallery/dessert-table.png", alt: "A beautifully arranged bakery dessert table ready for a celebration" },
       { name: "Traditional Sweet Selection", image: "/bakery-gallery/traditional-sweets.svg", alt: "Traditional sweets arranged for gifting" }
@@ -102,59 +112,67 @@ type CollectionSlug = keyof typeof collections;
 type ProductItem = { readonly name: string; readonly image: string; readonly alt: string };
 
 const CategoryHeader = ({ current }: { current?: string }): ReactElement => (
-  <header className="border-b border-[#eee0ce] bg-[#fffaf4]">
+  <header className="sticky top-0 z-30 border-b border-white/10 bg-[#3a2418] text-[#fff7eb] shadow-[0_12px_28px_-20px_rgba(30,16,8,0.8)]">
     <div className="mx-auto flex min-h-[86px] max-w-[1400px] items-center justify-between gap-4 px-5 sm:px-8 lg:px-10">
-      <Link href="/" aria-label="Sweet Aroma home"><Image src="/sweet-aroma-logo-original.png" alt="Sweet Aroma Bakery & Sweets" width={1536} height={1024} className="h-[72px] w-[108px] rounded-xl object-contain sm:h-[82px] sm:w-[123px]" /></Link>
+      <Link href="/" aria-label="Sweet Aroma home" className="rounded-xl bg-[#f8ead5] px-2"><Image src="/sweet-aroma-logo-original.png" alt="Sweet Aroma Bakery & Sweets" width={1536} height={1024} className="h-[66px] w-[100px] object-contain sm:h-[74px] sm:w-[112px]" /></Link>
       <nav className="hidden items-center gap-1 md:flex" aria-label="Shop categories">
-        <Link href="/shop" className={`rounded-full px-3 py-2 text-xs font-semibold ${!current ? "bg-[#713511] text-white" : "text-[#68452e] hover:bg-[#f8ecdc]"}`}>All products</Link>
-        {shopCategories.map((category) => <Link key={category.slug} href={`/shop/${category.slug}`} aria-current={current === category.slug ? "page" : undefined} className={`rounded-full px-3 py-2 text-xs font-semibold ${current === category.slug ? "bg-[#713511] text-white" : "text-[#68452e] hover:bg-[#f8ecdc]"}`}>{category.title}</Link>)}
+        <Link href="/" className="rounded-full px-3 py-2 text-xs font-semibold text-white/80 transition hover:bg-white/10">Home</Link>
+        <Link href="/shop" aria-current={!current ? "page" : undefined} className={`rounded-full px-3 py-2 text-xs font-semibold transition ${!current ? "bg-[#dfa853] text-[#2d1a10]" : "text-white/80 hover:bg-white/10"}`}>All products</Link>
+        {shopCategories.map((category) => <Link key={category.slug} href={`/shop/${category.slug}`} aria-current={current === category.slug ? "page" : undefined} className={`rounded-full px-3 py-2 text-xs font-semibold ${current === category.slug ? "bg-[#dfa853] text-[#2d1a10]" : "text-white/80 hover:bg-white/10"}`}>{category.title}</Link>)}
+        <Link href="/about" className="rounded-full px-3 py-2 text-xs font-semibold text-white/80 transition hover:bg-white/10">About</Link>
       </nav>
-      <Link href="/" className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#e8d5bf] bg-white px-4 py-2.5 text-xs font-semibold text-[#633315] transition hover:bg-[#fff1df]"><ArrowLeft className="size-3.5" /><span className="hidden sm:inline">Home</span></Link>
+      <Link href="/contact" className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#e8d5bf] bg-white px-4 py-2.5 text-xs font-semibold text-[#633315] transition hover:bg-[#fff1df]"><Phone className="size-3.5" /><span className="hidden sm:inline">Contact</span></Link>
     </div>
     <nav className="flex gap-2 overflow-x-auto border-t border-[#f1e5d9] px-4 py-2.5 md:hidden" aria-label="Shop categories">
-      <Link href="/shop" className="shrink-0 rounded-full bg-[#713511] px-3 py-2 text-[10px] font-semibold text-white">All products</Link>
-      {shopCategories.map((category) => <Link key={category.slug} href={`/shop/${category.slug}`} className="shrink-0 rounded-full border border-[#ead7c4] bg-white px-3 py-2 text-[10px] font-semibold text-[#68452e]">{category.emoji} {category.title}</Link>)}
+      <Link href="/" className="shrink-0 rounded-full border border-white/20 px-3 py-2 text-[10px] font-semibold text-white/80">Home</Link>
+      <Link href="/shop" aria-current={!current ? "page" : undefined} className={`shrink-0 rounded-full px-3 py-2 text-[10px] font-semibold ${!current ? "bg-[#dfa853] text-[#2d1a10]" : "border border-white/20 text-white/80"}`}>All products</Link>
+      {shopCategories.map((category) => <Link key={category.slug} href={`/shop/${category.slug}`} className="shrink-0 rounded-full border border-white/20 px-3 py-2 text-[10px] font-semibold text-white/80">{category.title}</Link>)}
+      <Link href="/about" className="shrink-0 rounded-full border border-white/20 px-3 py-2 text-[10px] font-semibold text-white/80">About</Link>
+      <Link href="/contact" className="shrink-0 rounded-full border border-white/20 px-3 py-2 text-[10px] font-semibold text-white/80">Contact</Link>
     </nav>
   </header>
 );
 
 const ProductGrid = ({ items }: { items: readonly ProductItem[] }): ReactElement => (
   <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
-    {items.map((item) => <article key={item.image} className="group overflow-hidden rounded-[18px] border border-[#eee5d9] bg-white shadow-[0_8px_24px_-20px_rgba(87,44,18,0.42)]">
-      <div className="relative aspect-[4/3] overflow-hidden bg-[#f1ebe4]"><Image src={item.image} alt={item.alt} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw" className="object-cover transition duration-500 group-hover:scale-105" /></div>
-      <div className="flex min-h-[70px] items-center justify-between gap-2 px-3 py-2.5"><h2 className="text-[11px] font-bold leading-4 text-[#432819] sm:text-xs">{item.name}</h2><a aria-label={`Ask about ${item.name}`} href={`${whatsappUrl}${encodeURIComponent(`Hi Sweet Aroma, is ${item.name} available?`)}`} target="_blank" rel="noreferrer" className="shrink-0 text-[10px] font-semibold text-[#8d4a22]">Ask us</a></div>
+    {items.map((item) => <article key={item.image} className="group overflow-hidden rounded-[14px] border border-[#eadbc7] bg-[#fffaf2] shadow-[0_18px_38px_-30px_rgba(67,37,18,0.5)] transition duration-300 hover:-translate-y-1 hover:border-[#c8a363] hover:shadow-[0_24px_44px_-28px_rgba(67,37,18,0.35)]">
+      <div className="relative aspect-[4/3] overflow-hidden bg-[#f1e5d3]"><Image src={item.image} alt={item.alt} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw" className="object-cover transition duration-500 group-hover:scale-105" /><span className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/25 to-transparent" /></div>
+      <div className="flex min-h-[88px] items-center justify-between gap-2 px-3.5 py-3"><div className="min-w-0"><p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#a0785b]">Sweet Aroma</p><h2 className="mt-1 font-serif text-[12px] font-bold leading-4 text-[#432819] sm:text-sm">{item.name}</h2></div><a aria-label={`Ask about ${item.name}`} href={`${whatsappUrl}${encodeURIComponent(`Hi Sweet Aroma, is ${item.name} available?`)}`} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-1 rounded-md bg-[#3a2418] px-3 py-2 text-[9px] font-bold uppercase tracking-[0.08em] text-white transition hover:bg-[#59371f]">Ask <ArrowRight className="size-3 text-[#e1ad58]" /></a></div>
     </article>)}
   </div>
 );
 
 const ShopHomePage = (): ReactElement => (
-  <main className="min-h-screen bg-[linear-gradient(180deg,#fffaf4_0%,#faf5ee_100%)] text-[#392113]">
+    <main className="min-h-screen bg-[#f9f2e7] text-[#392113]">
     <CategoryHeader />
-    <section className="border-b border-[#eee0ce] bg-[#f8ead8] px-5 py-12 sm:py-16">
-      <div className="mx-auto max-w-[1100px]"><span className="inline-flex items-center gap-2 rounded-full border border-[#e8d8c5] bg-white/70 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-[#7b421f]"><ShoppingBag className="size-3.5" /> Sweet Aroma collections</span><h1 className="mt-4 font-serif text-[36px] font-bold tracking-[-0.04em] text-[#542a14] sm:text-[48px]">What are you craving?</h1><p className="mt-3 max-w-[620px] text-sm leading-6 text-[#796858]">Choose a collection to explore cakes, cookies, fresh bakery treats, sweets, nimko and gift packs.</p></div>
+    <section className="bg-[#28170f] px-5 py-14 text-[#fff7eb] sm:py-[76px]">
+      <div className="mx-auto max-w-[1200px]"><p className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.22em] text-[#dfa853] before:h-px before:w-8 before:bg-[#dfa853]">Sweet Aroma collections</p><h1 className="mt-4 font-serif text-[40px] font-bold leading-[1.04] tracking-[-0.045em] sm:text-[58px]">What are you<br className="sm:hidden" /> craving?</h1><p className="mt-4 max-w-[620px] text-sm leading-6 text-white/70 sm:text-base">Choose a collection to explore cakes, cookies, fresh bakery treats, sweets, nimko and gift packs.</p></div>
     </section>
-    <section className="mx-auto max-w-[1400px] px-5 py-9 sm:px-8 sm:py-12 lg:px-10">
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">{shopCategories.map((category) => <Link key={category.slug} href={`/shop/${category.slug}`} className="group flex min-h-36 flex-col items-center justify-center rounded-2xl border border-[#eee0ce] bg-white px-3 py-5 text-center shadow-sm transition hover:-translate-y-1 hover:bg-[#fff4e7] hover:shadow-md"><span className="text-4xl transition group-hover:scale-110">{category.emoji}</span><span className="mt-3 text-sm font-bold text-[#542a14]">{category.title}</span><span className="mt-1 inline-flex items-center gap-1 text-[10px] font-semibold text-[#8b542b]">Browse collection <ArrowRight className="size-3" /></span></Link>)}</div>
+    <section className="mx-auto max-w-[1440px] px-5 py-10 sm:px-8 sm:py-14 lg:px-10">
+      <div className="mb-6 flex items-end justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[0.17em] text-[#a36337]">Find your favourite</p><h2 className="mt-1.5 font-serif text-[28px] font-bold tracking-[-0.04em] text-[#542a14] sm:text-[34px]">Shop by collection</h2></div><span className="hidden text-xs text-[#8b7865] sm:block">{shopCategories.length} fresh collections</span></div>
+      <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 sm:gap-5 lg:grid-cols-3 xl:grid-cols-6">{shopCategories.map((category) => <Link key={category.slug} href={`/shop/${category.slug}`} className="group overflow-hidden rounded-[14px] border border-[#eadbc7] bg-[#fffaf2] shadow-[0_18px_38px_-30px_rgba(67,37,18,0.5)] transition duration-300 hover:-translate-y-1 hover:border-[#c8a363] hover:shadow-[0_24px_44px_-28px_rgba(67,37,18,0.35)]"><span className="relative block aspect-[4/3] overflow-hidden bg-[#f1e5d3]"><Image src={category.image} alt={category.alt} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw" className="object-cover transition duration-500 group-hover:scale-105" /><span className="absolute left-3 top-3 grid size-9 place-items-center rounded-lg border border-white/70 bg-white/90 text-lg shadow-sm backdrop-blur-sm" aria-hidden="true">{category.emoji}</span></span><span className="flex items-center justify-between gap-2 px-3.5 py-3.5"><span className="block font-serif text-[13px] font-bold text-[#542a14] sm:text-[15px]">{category.title}<span className="mt-1 block font-sans text-[9px] font-medium text-[#8b7865]">Explore collection</span></span><span className="grid size-8 shrink-0 place-items-center rounded-full bg-[#f1e4d0] text-[#8b542b] transition group-hover:bg-[#3a2418] group-hover:text-white"><ArrowRight className="size-3.5" /></span></span></Link>)}</div>
     </section>
-    <footer className="border-t border-[#eee0ce] bg-[#fffaf4] py-5 text-center text-xs text-[#796858]">Freshly made with care · <a className="font-semibold text-[#75401d]" href={`${whatsappUrl}${encodeURIComponent("Hello Sweet Aroma, I have a question.")}`}>Contact us <Phone className="inline size-3" /></a></footer>
+    <footer className="bg-[#28170f] px-5 py-7 text-center text-xs text-white/70">Freshly made with care · <a className="font-semibold text-[#e7b65e]" href={`${whatsappUrl}${encodeURIComponent("Hello Sweet Aroma, I have a question.")}`}>Contact us <Phone className="inline size-3" /></a><p className="mt-3 text-[10px] text-white/45">© 2026 Sweet Aroma Bakery &amp; Sweets</p></footer>
   </main>
 );
 
 const CategoryPage = ({ slug }: { slug: string }): ReactElement => {
   if (slug === "cakes") {
-    return <main className="min-h-screen bg-[#fffaf4] text-[#392113]"><CategoryHeader current={slug} /><CakeCollection /></main>;
+    return <main className="min-h-screen bg-[#f9f2e7] text-[#392113]"><CategoryHeader current={slug} /><CakeCollection /></main>;
   }
 
   if (!(slug in collections)) return <ShopHomePage />;
   const collection = collections[slug as CollectionSlug];
   return (
-    <main className="min-h-screen bg-[linear-gradient(180deg,#fffaf4_0%,#faf5ee_100%)] text-[#392113]">
+    <main className="min-h-screen bg-[#f9f2e7] text-[#392113]">
       <CategoryHeader current={slug} />
-      <section className="border-b border-[#eee0ce] bg-[#f8ead8] px-5 py-10 sm:py-14">
-        <div className="mx-auto max-w-[1200px]"><Link href="/shop" className="inline-flex items-center gap-2 text-xs font-semibold text-[#75401d] hover:text-[#542a14]"><ArrowLeft className="size-3.5" /> All collections</Link><p className="mt-5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#9b5428]">{collection.eyebrow}</p><h1 className="mt-2 font-serif text-[34px] font-bold tracking-[-0.04em] text-[#542a14] sm:text-[44px]">{collection.title}</h1><p className="mt-3 max-w-[640px] text-sm leading-6 text-[#796858]">{collection.description}</p></div>
+      <section className="relative isolate min-h-[330px] overflow-hidden border-b border-[#eee0ce] bg-[#6d391d] px-5 py-11 sm:min-h-[390px] sm:py-14">
+        <Image src={collection.heroImage} alt={collection.heroAlt} fill priority sizes="100vw" className="absolute inset-0 -z-20 object-cover object-center" />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(37,20,12,0.86)_0%,rgba(53,29,16,0.67)_46%,rgba(61,30,12,0.13)_100%)]" />
+        <div className="relative mx-auto flex min-h-[240px] max-w-[1200px] flex-col justify-center sm:min-h-[270px]"><Link href="/shop" className="inline-flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/12 px-3.5 py-2 text-xs font-semibold text-white backdrop-blur-sm transition hover:bg-white/25"><ArrowLeft className="size-3.5" /> All collections</Link><p className="mt-6 text-[10px] font-bold uppercase tracking-[0.16em] text-[#ffe1bd]">{collection.eyebrow}</p><h1 className="mt-2 font-serif text-[42px] font-bold tracking-[-0.045em] text-white drop-shadow-sm sm:text-[58px]">{collection.title}</h1><p className="mt-3 max-w-[640px] text-sm leading-6 text-white/90 sm:text-base">{collection.description}</p></div>
       </section>
-      <section className="mx-auto max-w-[1400px] px-5 py-8 sm:px-8 sm:py-12 lg:px-10"><ProductGrid items={collection.items} /></section>
-      <footer className="border-t border-[#eee0ce] bg-[#fffaf4] py-5 text-center text-xs text-[#796858]">Want to order? <a className="font-bold text-[#75401d]" href={`${whatsappUrl}${encodeURIComponent(`Hi Sweet Aroma, please share details for ${collection.title}.`)}`} target="_blank" rel="noreferrer">Message Sweet Aroma</a></footer>
+      <section className="mx-auto max-w-[1400px] px-5 py-9 sm:px-8 sm:py-14 lg:px-10"><div className="mb-5 flex items-baseline justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[0.17em] text-[#a36337]">Freshly selected</p><h2 className="mt-1 font-serif text-[27px] font-bold tracking-[-0.04em] text-[#542a14]">The collection</h2></div><span className="text-[10px] text-[#8b7865]">{collection.items.length} items</span></div><ProductGrid items={collection.items} /></section>
+      <footer className="bg-[#28170f] py-6 text-center text-xs text-white/70">Want to order? <a className="font-bold text-[#e7b65e]" href={`${whatsappUrl}${encodeURIComponent(`Hi Sweet Aroma, please share details for ${collection.title}.`)}`} target="_blank" rel="noreferrer">Message Sweet Aroma <ArrowRight className="inline size-3.5" /></a><p className="mt-3 text-[10px] text-white/45">© 2026 Sweet Aroma Bakery &amp; Sweets</p></footer>
     </main>
   );
 };
