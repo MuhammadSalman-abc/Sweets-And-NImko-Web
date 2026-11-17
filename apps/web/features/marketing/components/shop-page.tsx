@@ -77,6 +77,36 @@ const collections = {
     heroImage: "/bakery-gallery/sweet-aroma-hero-display.png",
     heroAlt: "Traditional mithai and bakery treats ready to share",
     items: [
+      { name: "Pistachio Gulab Jamun", image: "/sweets/mithai-01.png", alt: "Pistachio dusted gulab jamun arranged on a serving plate" },
+      { name: "Red Velvet Gulab Jamun", image: "/sweets/mithai-02.png", alt: "Ruby red gulab jamun garnished with edible silver" },
+      { name: "Almond Barfi", image: "/sweets/mithai-03.png", alt: "Square almond barfi topped with almonds and silver leaf" },
+      { name: "Kaju Katli", image: "/sweets/mithai-04.png", alt: "White cashew katli pieces topped with cashew halves" },
+      { name: "Rasgulla", image: "/sweets/mithai-05.png", alt: "Soft yellow rasgulla sweets with red cherry centres" },
+      { name: "Jodhpuri Laddu", image: "/sweets/mithai-06.png", alt: "Golden Jodhpuri laddus in a sweet shop display" },
+      { name: "Kaju Roll", image: "/sweets/mithai-07.png", alt: "Sliced kaju rolls coated in silver leaf" },
+      { name: "Coconut Ladoo", image: "/sweets/mithai-08.png", alt: "Pink coconut ladoos coated in shredded coconut" },
+      { name: "Besan Barfi", image: "/sweets/mithai-09.png", alt: "Golden gram flour barfi cut into neat squares" },
+      { name: "Chocolate Dry Fruit Roll", image: "/sweets/mithai-10.png", alt: "Chocolate and dry fruit rolls arranged in rows" },
+      { name: "Dry Fruit Peda", image: "/sweets/mithai-11.png", alt: "Brown milk pedas decorated with chopped nuts" },
+      { name: "White Peda", image: "/sweets/mithai-12.png", alt: "Soft white pedas arranged in a tray" },
+      { name: "Golden Ladoo", image: "/sweets/mithai-13.png", alt: "Golden ladoos in a traditional sweet shop tray" },
+      { name: "Milk Barfi", image: "/sweets/mithai-14.png", alt: "Creamy white milk barfi cut into square pieces" },
+      { name: "Golden Sweet Sticks", image: "/sweets/mithai-15.png", alt: "Crispy golden sweet sticks ready to serve" },
+      { name: "Boondi Ladoo", image: "/sweets/mithai-16.png", alt: "Small pale golden boondi ladoos" },
+      { name: "Kesar Sweet Bites", image: "/sweets/mithai-17.png", alt: "Glossy orange kesar sweets arranged close together" },
+      { name: "Mango Barfi", image: "/sweets/mithai-18.png", alt: "Golden mango barfi pieces in a takeaway tray" },
+      { name: "Motichoor Laddu", image: "/sweets/mithai-19.png", alt: "Orange motichoor laddus topped with pistachio" },
+      { name: "Motichoor Laddu Selection", image: "/sweets/mithai-20.png", alt: "A close view of orange motichoor laddus" },
+      { name: "Classic Rasgulla", image: "/sweets/mithai-21.png", alt: "Soft white rasgullas in a traditional tray" },
+      { name: "Golden Balushahi", image: "/sweets/mithai-22.png", alt: "Golden flaky balushahi sweets in a gift box" },
+      { name: "Poppy Seed Pista Roll", image: "/sweets/mithai-23.png", alt: "Poppy seed coated pista rolls with a green centre" },
+      { name: "Besan Laddu", image: "/sweets/mithai-24.png", alt: "Golden besan laddus decorated with almonds" },
+      { name: "Boondi Mix", image: "/sweets/mithai-25.png", alt: "Colourful sweet boondi pearls with nuts and fruit" },
+      { name: "Malai Barfi", image: "/sweets/mithai-26.png", alt: "Pale creamy malai barfi stacked in a display" },
+      { name: "Gur Papdi", image: "/sweets/mithai-27.png", alt: "Rich jaggery papdi garnished with pistachio" },
+      { name: "Almond Milk Cake", image: "/sweets/mithai-28.png", alt: "Almond milk cake sweets arranged on a white plate" },
+      { name: "Kesar Peda", image: "/sweets/mithai-29.png", alt: "Golden kesar pedas served in a glass bowl" },
+      { name: "Chocolate Barfi", image: "/sweets/mithai-30.png", alt: "Chocolate and vanilla barfi pieces on a wooden surface" },
       { name: "Gulab Jamun", image: "/bakery-gallery/traditional-sweets.svg", alt: "Golden gulab jamun traditional sweets" },
       { name: "Sweet Celebration Selection", image: "/bakery-gallery/dessert-table.png", alt: "A colourful table of celebration sweets and cakes" }
     ]
@@ -162,11 +192,11 @@ const ProductGrid = ({ items, slug }: { items: readonly ProductItem[]; slug: str
         const added = cart.items.some((entry) => entry.id === id);
         return <article key={item.image} className="group overflow-hidden rounded-[14px] border border-[#eadbc7] bg-[#fffaf2] shadow-[0_18px_38px_-30px_rgba(67,37,18,0.5)] transition duration-300 hover:-translate-y-1 hover:border-[#c8a363] hover:shadow-[0_24px_44px_-28px_rgba(67,37,18,0.35)]">
           <button type="button" onClick={() => setPreviewItem(item)} aria-label={`View full-size image of ${item.name}`} className="group/image relative block aspect-[4/3] w-full overflow-hidden bg-[#f1e5d3] text-left"><Image src={item.image} alt={item.alt} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw" className="object-cover transition duration-500 group-hover/image:scale-105" /><span className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/25 to-transparent" /><span className="absolute bottom-2 right-2 rounded-full bg-white/90 px-2.5 py-1.5 text-[9px] font-semibold text-[#542a14] opacity-0 shadow-sm transition group-hover/image:opacity-100">View full image</span></button>
-          <div className="px-3.5 py-3 sm:px-4"><p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#a0785b]">Sweet Aroma</p><h2 className="mt-1 min-h-9 font-serif text-[12px] font-bold leading-4 text-[#432819] sm:text-sm">{item.name}</h2><div className="mt-2 flex items-center justify-between gap-2"><p className="font-bold text-[#80551e]">Rs. {price.toLocaleString("en-PK")}</p><button type="button" onClick={() => cart.addItem({ id, name: item.name, price, image: item.image, category: slug })} className="inline-flex h-9 items-center gap-1.5 rounded-md bg-[#3a2418] px-3 text-[10px] font-bold uppercase tracking-[0.06em] text-white transition hover:bg-[#59371f]">{added ? <Check className="size-3.5 text-[#e1ad58]" /> : <ShoppingCart className="size-3.5 text-[#e1ad58]" />}{added ? `Add (${cart.items.find((entry) => entry.id === id)?.quantity ?? 0})` : "Add"}</button></div></div>
+          <div className="px-2.5 py-3 sm:px-4"><p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#a0785b]">Sweet Aroma</p><h2 className="mt-1 min-h-10 font-serif text-[12px] font-bold leading-4 text-[#432819] sm:min-h-9 sm:text-sm">{item.name}</h2><div className="mt-2 flex min-w-0 items-center justify-between gap-1.5"><p className="whitespace-nowrap text-[12px] font-bold text-[#80551e] sm:text-sm">Rs. {price.toLocaleString("en-PK")}</p><button type="button" aria-label={`Add ${item.name} to cart`} onClick={() => cart.addItem({ id, name: item.name, price, image: item.image, category: slug })} className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[#3a2418] text-white transition hover:bg-[#59371f] sm:h-9 sm:w-auto sm:gap-1.5 sm:px-3 sm:text-[10px] sm:font-bold sm:uppercase sm:tracking-[0.06em]">{added ? <Check className="size-4 text-[#e1ad58]" /> : <ShoppingCart className="size-4 text-[#e1ad58]" />}<span className="hidden sm:inline">{added ? `Add (${cart.items.find((entry) => entry.id === id)?.quantity ?? 0})` : "Add"}</span></button></div></div>
         </article>;
       })}
     </div>
-    {cart.count > 0 && <aside className="fixed inset-x-4 bottom-4 z-40 mx-auto flex max-w-[720px] items-center justify-between gap-4 rounded-2xl border border-[#e8d5bf] bg-[#fffaf2] px-4 py-3 shadow-[0_18px_55px_-18px_rgba(43,23,13,0.55)] sm:inset-x-6 sm:px-5"><div><p className="text-xs font-bold text-[#542a14]">{cart.count} {cart.count === 1 ? "item" : "items"} in your cart</p><p className="mt-0.5 text-[10px] text-[#806c55]">Sample total: Rs. {cart.total.toLocaleString("en-PK")}</p></div><a href={`${whatsappUrl}${orderText}`} className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-[#3a2418] px-4 py-3 text-xs font-bold text-white transition hover:bg-[#59371f]">Continue on WhatsApp <ArrowRight className="size-4 text-[#e1ad58]" /></a></aside>}
+    {cart.count > 0 && <aside className="fixed inset-x-3 bottom-3 z-40 mx-auto flex max-w-[720px] flex-col items-stretch justify-between gap-2 rounded-2xl border border-[#e8d5bf] bg-[#fffaf2] px-4 py-3 shadow-[0_18px_55px_-18px_rgba(43,23,13,0.55)] sm:inset-x-6 sm:flex-row sm:items-center sm:gap-4 sm:px-5"><div><p className="text-xs font-bold text-[#542a14]">{cart.count} {cart.count === 1 ? "item" : "items"} in your cart</p><p className="mt-0.5 text-[10px] text-[#806c55]">Sample total: Rs. {cart.total.toLocaleString("en-PK")}</p></div><a href={`${whatsappUrl}${orderText}`} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-[#3a2418] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#59371f]">Continue on WhatsApp <ArrowRight className="size-4 text-[#e1ad58]" /></a></aside>}
     {previewItem && <div className="fixed inset-0 z-50 grid place-items-center bg-[#1b110b]/90 p-4 sm:p-8" role="dialog" aria-modal="true" aria-label={previewItem.name} onClick={() => setPreviewItem(null)}><button type="button" aria-label="Close image preview" onClick={() => setPreviewItem(null)} className="absolute right-4 top-4 grid size-11 place-items-center rounded-full border border-white/30 bg-black/30 text-white transition hover:bg-white/15 sm:right-8 sm:top-8"><X className="size-5" /></button><div className="relative h-[min(82vh,900px)] w-full max-w-[1280px]" onClick={(event) => event.stopPropagation()}><Image src={previewItem.image} alt={previewItem.alt} fill sizes="100vw" className="object-contain" /><p className="absolute inset-x-0 -bottom-8 text-center font-serif text-sm font-semibold text-white sm:-bottom-9 sm:text-base">{previewItem.name}</p></div></div>}
   </>;
 };
