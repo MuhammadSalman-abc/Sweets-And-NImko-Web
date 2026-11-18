@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 const RootLayout = ({ children }: RootLayoutProps): ReactElement => (
-  <html lang="en">
+  <html lang="en" data-scroll-behavior="smooth">
     <body>{children}</body>
   </html>
 );

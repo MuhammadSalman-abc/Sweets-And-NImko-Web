@@ -23,8 +23,8 @@ const BakeryGalleryPage = (): ReactElement => {
   <main className="min-h-screen bg-[#f9f2e7] text-[#392113]">
     <header className="border-b border-white/10 bg-[#3a2418] text-[#fff7eb]">
       <div className="mx-auto flex min-h-[92px] max-w-[1180px] items-center justify-between px-5 py-2 sm:px-8 lg:px-10">
-        <Link href="/" className="flex items-center rounded-xl bg-[#f8ead5] px-2" aria-label="Back to Sweet Aroma home">
-          <Image src="/sweet-aroma-logo-original.png" alt="Sweet Aroma Bakery & Sweets" width={1536} height={1024} className="h-[66px] w-[100px] object-contain sm:h-[74px] sm:w-[112px]" />
+        <Link href="/" className="flex shrink-0 items-center" aria-label="Back to Sweet Aroma home">
+          <Image src="/sweet-aroma-logo.svg" alt="Sweet Aroma Bakery & Sweets" width={1536} height={1024} className="h-[66px] w-[100px] object-contain mix-blend-screen sm:h-[74px] sm:w-[112px]" />
         </Link>
         <Link href="/" className="inline-flex items-center gap-2 rounded-md border border-white/25 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-white/10">
           <ArrowLeft className="size-3.5" /> Back to Sweet Aroma
@@ -66,7 +66,7 @@ const BakeryGalleryPage = (): ReactElement => {
 
     <footer className="border-t border-white/10 bg-[#28170f] text-white">
       <div className="mx-auto flex max-w-[1180px] flex-col gap-4 px-5 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
-        <div className="flex items-center gap-3"><Image src="/sweet-aroma-logo-original.png" alt="" width={1536} height={1024} className="h-12 w-[72px] rounded-lg bg-[#f8ead5] object-contain" /><p className="text-xs text-white/65">Bakery photo collection · Sweet Aroma</p></div>
+        <div className="flex items-center gap-3"><Image src="/sweet-aroma-logo.svg" alt="Sweet Aroma Bakery & Sweets" width={1536} height={1024} className="h-12 w-[72px] object-contain mix-blend-screen" /><p className="text-xs text-white/65">Bakery photo collection · Sweet Aroma</p></div>
         <Link className="inline-flex w-fit items-center gap-2 text-xs font-semibold text-[#e7b65e]" href="/"><ArrowLeft className="size-3.5" /> Return to Sweet Aroma</Link>
       </div>
     </footer>

@@ -107,7 +107,6 @@ const collections = {
       { name: "Almond Milk Cake", image: "/sweets/mithai-28.png", alt: "Almond milk cake sweets arranged on a white plate" },
       { name: "Kesar Peda", image: "/sweets/mithai-29.png", alt: "Golden kesar pedas served in a glass bowl" },
       { name: "Chocolate Barfi", image: "/sweets/mithai-30.png", alt: "Chocolate and vanilla barfi pieces on a wooden surface" },
-      { name: "Pistachio Gulab Jamun", image: "/sweets/mithai-01.png", alt: "Pistachio dusted gulab jamun arranged on a serving plate" },
       { name: "Sweet Celebration Selection", image: "/bakery-gallery/dessert-table.png", alt: "A colourful table of celebration sweets and cakes" }
     ]
   },
@@ -146,7 +145,7 @@ type ProductItem = { readonly name: string; readonly image: string; readonly alt
 const CategoryHeader = ({ current }: { current?: string }): ReactElement => (
   <header className="sticky top-0 z-30 border-b border-white/10 bg-[#3a2418] text-[#fff7eb] shadow-[0_12px_28px_-20px_rgba(30,16,8,0.8)]">
     <div className="mx-auto flex min-h-[86px] max-w-[1400px] items-center justify-between gap-4 px-5 sm:px-8 lg:px-10">
-      <Link href="/" aria-label="Sweet Aroma home" className="rounded-xl bg-[#f8ead5] px-2"><Image src="/sweet-aroma-logo-original.png" alt="Sweet Aroma Bakery & Sweets" width={1536} height={1024} className="h-[66px] w-[100px] object-contain sm:h-[74px] sm:w-[112px]" /></Link>
+      <Link href="/" aria-label="Sweet Aroma home" className="shrink-0"><Image src="/sweet-aroma-logo.svg" alt="Sweet Aroma Bakery & Sweets" width={1536} height={1024} className="h-[66px] w-[100px] object-contain mix-blend-screen sm:h-[74px] sm:w-[112px]" /></Link>
       <nav className="hidden items-center gap-1 md:flex" aria-label="Shop categories">
         <Link href="/" className="rounded-full px-3 py-2 text-xs font-semibold text-white/80 transition hover:bg-white/10">Home</Link>
         <Link href="/shop" aria-current={!current ? "page" : undefined} className={`rounded-full px-3 py-2 text-xs font-semibold transition ${!current ? "bg-[#dfa853] text-[#2d1a10]" : "text-white/80 hover:bg-white/10"}`}>All products</Link>
@@ -190,7 +189,7 @@ const ProductGrid = ({ items, slug }: { items: readonly ProductItem[]; slug: str
         const price = samplePriceFor(slug, item, index);
         const id = `${slug}:${item.image}`;
         const added = cart.items.some((entry) => entry.id === id);
-        return <article key={item.image} className="group overflow-hidden rounded-[14px] border border-[#eadbc7] bg-[#fffaf2] shadow-[0_18px_38px_-30px_rgba(67,37,18,0.5)] transition duration-300 hover:-translate-y-1 hover:border-[#c8a363] hover:shadow-[0_24px_44px_-28px_rgba(67,37,18,0.35)]">
+        return <article key={`${item.name}:${item.image}`} className="group overflow-hidden rounded-[14px] border border-[#eadbc7] bg-[#fffaf2] shadow-[0_18px_38px_-30px_rgba(67,37,18,0.5)] transition duration-300 hover:-translate-y-1 hover:border-[#c8a363] hover:shadow-[0_24px_44px_-28px_rgba(67,37,18,0.35)]">
           <button type="button" onClick={() => setPreviewItem(item)} aria-label={`View full-size image of ${item.name}`} className="group/image relative block aspect-[4/3] w-full overflow-hidden bg-[#f1e5d3] text-left"><Image src={item.image} alt={item.alt} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw" className="object-cover transition duration-500 group-hover/image:scale-105" /><span className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/25 to-transparent" /><span className="absolute bottom-2 right-2 rounded-full bg-white/90 px-2.5 py-1.5 text-[9px] font-semibold text-[#542a14] opacity-0 shadow-sm transition group-hover/image:opacity-100">View full image</span></button>
           <div className="px-2.5 py-3 sm:px-4"><p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#a0785b]">Sweet Aroma</p><h2 className="mt-1 min-h-10 font-serif text-[12px] font-bold leading-4 text-[#432819] sm:min-h-9 sm:text-sm">{item.name}</h2><div className="mt-2 flex min-w-0 items-center justify-between gap-1.5"><p className="whitespace-nowrap text-[12px] font-bold text-[#80551e] sm:text-sm">Rs. {price.toLocaleString("en-PK")}</p><button type="button" aria-label={`Add ${item.name} to cart`} onClick={() => cart.addItem({ id, name: item.name, price, image: item.image, category: slug })} className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[#3a2418] text-white transition hover:bg-[#59371f] sm:h-9 sm:w-auto sm:gap-1.5 sm:px-3 sm:text-[10px] sm:font-bold sm:uppercase sm:tracking-[0.06em]">{added ? <Check className="size-4 text-[#e1ad58]" /> : <ShoppingCart className="size-4 text-[#e1ad58]" />}<span className="hidden sm:inline">{added ? `Add (${cart.items.find((entry) => entry.id === id)?.quantity ?? 0})` : "Add"}</span></button></div></div>
         </article>;

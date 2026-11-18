@@ -1,10 +1,10 @@
 "use client";
 
 import type { ReactElement } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, ChevronDown, Clock3, Heart, House, Menu, Minus, Music2, Phone, Plus, Search, ShieldCheck, ShoppingBag, ShoppingCart, Truck, UserRound, X } from "lucide-react";
+import { ArrowRight, BadgeCheck, ChevronDown, ChevronLeft, ChevronRight, Clock3, Heart, House, Menu, Minus, Music2, Pause, Phone, Play, Plus, Search, ShieldCheck, ShoppingBag, ShoppingCart, Truck, UserRound, X } from "lucide-react";
 import { useBakeryCart } from "./use-bakery-cart";
 const whatsappUrl = "https://wa.me/923128869242?text=Hi%20Sweet%20Aroma%2C%20I%27d%20like%20to%20place%20an%20order.";
 
@@ -24,6 +24,12 @@ const products = [
   { name: "Pistachio Gulab Jamun", price: 950, image: "/sweets/mithai-01.png", alt: "Pistachio dusted gulab jamun arranged on a serving plate", category: "Sweets" },
   { name: "Mix Nimko", price: 480, image: "/nimko/nimko-spicy-bowl.png", alt: "A bowl of colorful spicy nimko with peanuts", category: "Nimko" },
   { name: "Sweet Aroma Gift Box", price: 1200, image: "/bakery-gallery/dessert-table.png", alt: "A beautifully arranged bakery dessert table", category: "Gift Packs" }
+] as const;
+
+const heroSlides = [
+  { image: "/bakery-gallery/sweet-aroma-hero-display.png", alt: "Chocolate cake, fresh bakery bread, traditional sweets and nimko at Sweet Aroma", label: "A little sweetness, made fresh" },
+  { image: "/cakes/chocolate-cherry-banner.png", alt: "Chocolate cherry celebration cake made by Sweet Aroma", label: "Cakes for your celebrations" },
+  { image: "/bakery-gallery/croissants.png", alt: "Golden almond croissants fresh from the oven", label: "Fresh from our bakery" }
 ] as const;
 
 type Product = (typeof products)[number];
@@ -48,11 +54,19 @@ const BakeryHomePage = (): ReactElement => {
   const cart = useBakeryCart();
   const [cartOpen, setCartOpen] = useState(false);
   const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [carouselPaused, setCarouselPaused] = useState(false);
+  useEffect(() => {
+    if (carouselPaused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setInterval(() => setActiveSlide((index) => (index + 1) % heroSlides.length), 6000);
+    return () => window.clearInterval(timer);
+  }, [carouselPaused]);
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchQuery.trim().toLowerCase())
   );
   const addToCart = (product: Product): void => cart.addItem({ id: `${product.category.toLowerCase().replaceAll(" ", "-")}:${product.image}`, name: product.name, price: product.price, image: product.image, category: product.category });
   const checkoutUrl = `${whatsappUrl}%20My%20order:%20${encodeURIComponent(cart.items.map(({ name, quantity }) => `${name} x${quantity}`).join(", "))}%20—%20Total%20Rs.%20${cart.total.toLocaleString("en-PK")}.`;
+  const currentHeroSlide = heroSlides[activeSlide] ?? heroSlides[0];
 
   return (
   <main className="overflow-hidden bg-[#f9f2e7] text-[#392113]">
@@ -65,8 +79,8 @@ const BakeryHomePage = (): ReactElement => {
 
     <header className="sticky top-0 z-30 border-b border-white/10 bg-[#3a2418] text-[#fffaf1] shadow-[0_12px_28px_-20px_rgba(30,16,8,0.8)]">
       <div className="mx-auto flex min-h-[76px] max-w-[1440px] items-center justify-between gap-3 px-4 py-2 sm:min-h-[88px] sm:px-7 lg:px-10">
-        <Link href="/" className="flex shrink-0 items-center rounded-xl bg-[#f8ead5] px-2" aria-label="Sweet Aroma Bakery home">
-          <Image src="/sweet-aroma-logo-original.png" alt="Sweet Aroma Bakery & Sweets — freshly baked, always fresh" width={1536} height={1024} priority className="h-[66px] w-[100px] object-contain sm:h-[74px] sm:w-[112px]" />
+        <Link href="/" className="flex shrink-0 items-center" aria-label="Sweet Aroma Bakery home">
+          <Image src="/sweet-aroma-logo.svg" alt="Sweet Aroma Bakery & Sweets — freshly baked, always fresh" width={1536} height={1024} priority className="h-[66px] w-[100px] object-contain mix-blend-screen sm:h-[74px] sm:w-[112px]" />
         </Link>
         <nav className="hidden items-center gap-1 xl:flex" aria-label="Main navigation">
           <Link className="inline-flex h-10 items-center gap-2 rounded-full bg-[#dfa853] px-4 text-xs font-semibold text-[#2d1a10]" href="/"><House className="size-4" /> Home</Link>
@@ -99,10 +113,10 @@ const BakeryHomePage = (): ReactElement => {
           <div className="mt-7 flex flex-wrap gap-3"><Link href="/shop" className="inline-flex h-12 items-center gap-2 rounded-md bg-[#3a2418] px-6 text-[11px] font-bold uppercase tracking-[0.12em] text-[#fff7eb] transition hover:bg-[#59371f]">Shop our menu <ArrowRight className="size-4 text-[#e1ad58]" /></Link><a href={whatsappUrl} target="_blank" rel="noreferrer" className="inline-flex h-12 items-center gap-2 rounded-md border border-[#8c7967] px-6 text-[11px] font-bold uppercase tracking-[0.12em] text-[#3a2418] transition hover:bg-[#f1e3cf]">Order on WhatsApp <ArrowRight className="size-4" /></a></div>
           <div className="mt-9 flex flex-wrap gap-x-8 gap-y-4 border-t border-[#e8d9c4] pt-5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#967e61]"><span className="inline-flex items-center gap-2"><ShieldCheck className="size-4 text-[#b48945]" /> Made with care</span><span className="inline-flex items-center gap-2"><Truck className="size-4 text-[#b48945]" /> Delivery by arrangement</span></div>
         </div>
-        <div className="relative min-h-[280px] overflow-hidden sm:min-h-[420px] lg:min-h-[570px]">
-          <Image src="/bakery-gallery/sweet-aroma-hero-display.png" alt="Chocolate cake, fresh bakery bread, traditional sweets and nimko at Sweet Aroma" fill priority sizes="(max-width: 1024px) 100vw, 58vw" className="object-cover object-center" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#28170f]/45 via-transparent to-transparent" />
-          <span className="absolute bottom-5 right-5 rounded-sm bg-[#fff8ed] px-4 py-2 text-[9px] font-bold uppercase tracking-[0.16em] text-[#54331f]">Freshly baked, always fresh</span>
+        <div className="group/hero relative min-h-[280px] overflow-hidden rounded-[24px] sm:min-h-[420px] lg:min-h-[570px]" role="region" aria-roledescription="carousel" aria-label="Sweet Aroma bakery highlights">
+          {heroSlides.map((slide, index) => <div key={slide.image} className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === activeSlide ? "opacity-100" : "opacity-0"}`} aria-hidden={index !== activeSlide}><Image src={slide.image} alt={slide.alt} fill priority={index === 0} sizes="(max-width: 1024px) 100vw, 58vw" className="object-cover object-center" /></div>)}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#28170f]/55 via-transparent to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 sm:p-6"><span key={currentHeroSlide.label} className="rounded-full border border-white/50 bg-[#fff8ed]/95 px-4 py-2 text-[9px] font-bold uppercase tracking-[0.16em] text-[#54331f] shadow-lg sm:text-[10px]">{currentHeroSlide.label}</span><div className="flex items-center gap-2 rounded-full border border-white/25 bg-[#28170f]/50 p-1.5 text-white opacity-100 backdrop-blur-sm transition sm:opacity-0 sm:group-hover/hero:opacity-100 sm:group-focus-within/hero:opacity-100"><button type="button" aria-label="Previous bakery image" onClick={() => setActiveSlide((index) => (index + heroSlides.length - 1) % heroSlides.length)} className="grid size-8 place-items-center rounded-full hover:bg-white/15"><ChevronLeft className="size-4" /></button><div className="flex items-center gap-1.5" aria-label={`Slide ${activeSlide + 1} of ${heroSlides.length}`}>{heroSlides.map((slide, index) => <button key={slide.image} type="button" aria-label={`Show image ${index + 1}: ${slide.label}`} aria-current={index === activeSlide} onClick={() => setActiveSlide(index)} className={`h-1.5 rounded-full transition-all ${index === activeSlide ? "w-5 bg-[#edbd69]" : "w-1.5 bg-white/70 hover:bg-white"}`} />)}</div><button type="button" aria-label="Next bakery image" onClick={() => setActiveSlide((index) => (index + 1) % heroSlides.length)} className="grid size-8 place-items-center rounded-full hover:bg-white/15"><ChevronRight className="size-4" /></button><button type="button" aria-label={carouselPaused ? "Play bakery image slideshow" : "Pause bakery image slideshow"} onClick={() => setCarouselPaused((paused) => !paused)} className="grid size-8 place-items-center rounded-full hover:bg-white/15">{carouselPaused ? <Play className="size-3.5" /> : <Pause className="size-3.5" />}</button></div></div>
         </div>
       </div>
     </section>
@@ -143,7 +157,7 @@ const BakeryHomePage = (): ReactElement => {
 
     <footer id="contact" className="bg-[#28170f] text-white">
       <div className="mx-auto grid max-w-[1440px] gap-9 border-b border-white/10 px-5 py-10 sm:grid-cols-2 sm:px-8 sm:py-14 lg:grid-cols-[1.2fr_0.8fr_0.8fr_1fr] lg:px-10">
-        <div><Link href="/" className="flex w-fit items-center rounded-lg bg-[#f8ead5] px-2" aria-label="Sweet Aroma Bakery home"><Image src="/sweet-aroma-logo-original.png" alt="Sweet Aroma Bakery & Sweets" width={1536} height={1024} className="h-[68px] w-[104px] object-contain" /></Link><p className="mt-4 max-w-[320px] text-xs leading-6 text-white/65">Fresh bakes, celebration cakes and traditional favourites, made with care.</p><a className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-[#e7b65e]" href={whatsappUrl} target="_blank" rel="noreferrer"><Phone className="size-3.5" /> 0312 8869242</a></div>
+        <div><Link href="/" className="flex w-fit items-center" aria-label="Sweet Aroma Bakery home"><Image src="/sweet-aroma-logo.svg" alt="Sweet Aroma Bakery & Sweets" width={1536} height={1024} className="h-[68px] w-[104px] object-contain mix-blend-screen" /></Link><p className="mt-4 max-w-[320px] text-xs leading-6 text-white/65">Fresh bakes, celebration cakes and traditional favourites, made with care.</p><a className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-[#e7b65e]" href={whatsappUrl} target="_blank" rel="noreferrer"><Phone className="size-3.5" /> 0312 8869242</a></div>
         <div><p className="mb-4 text-[9px] font-bold uppercase tracking-[0.2em] text-[#e7b65e]">Shop</p><div className="grid gap-3 text-xs text-white/75">{categories.slice(0, 4).map((category) => <Link key={category.title} href={category.href} className="hover:text-white">{category.title}</Link>)}<Link href="/shop" className="hover:text-white">All products</Link></div></div>
         <div><p className="mb-4 text-[9px] font-bold uppercase tracking-[0.2em] text-[#e7b65e]">Sweet Aroma</p><div className="grid gap-3 text-xs text-white/75"><Link href="/about" className="hover:text-white">About us</Link><Link href="/bakery-gallery" className="hover:text-white">Photo gallery</Link><Link href="/contact" className="hover:text-white">Contact</Link><a href={whatsappUrl} target="_blank" rel="noreferrer" className="hover:text-white">WhatsApp orders</a></div></div>
         <div><p className="mb-4 text-[9px] font-bold uppercase tracking-[0.2em] text-[#e7b65e]">Need help choosing?</p><p className="text-xs leading-6 text-white/65">Ask about availability, custom cake details, gift packs and delivery.</p><Link href="/contact" className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-white">Get in touch <ArrowRight className="size-3.5 text-[#e7b65e]" /></Link></div>
