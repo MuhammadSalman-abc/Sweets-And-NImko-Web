@@ -48,7 +48,7 @@ const BakeryGalleryPage = (): ReactElement => {
         <div><p className="font-serif text-lg font-bold text-[#3d281a]">All photos</p><p className="mt-1 text-xs text-[#8a765f]">Tap any picture to view it larger on this page</p></div>
         <span className="hidden items-center gap-1.5 text-[11px] font-medium text-[#8a765f] sm:inline-flex">{photos.length} photos <ArrowUpRight className="size-3.5" /></span>
       </div>
-      <div className="columns-1 gap-5 sm:columns-2 xl:columns-3">
+      <div className="a-stagger columns-1 gap-5 sm:columns-2 xl:columns-3">
         {photos.map((photo, index) => (
           <article key={photo.src} className="mb-5 break-inside-avoid overflow-hidden rounded-[14px] border border-[#eadbc7] bg-[#fffaf2] shadow-[0_18px_38px_-30px_rgba(67,37,18,0.5)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_44px_-28px_rgba(67,37,18,0.35)]">
             <button type="button" onClick={() => setPreviewPhoto(photo)} className="group relative block w-full overflow-hidden bg-[#f1e5d3] text-left" aria-label={`View full-size photo on this page: ${photo.alt}`}>
@@ -70,7 +70,7 @@ const BakeryGalleryPage = (): ReactElement => {
         <Link className="inline-flex w-fit items-center gap-2 text-xs font-semibold text-[#e7b65e]" href="/"><ArrowLeft className="size-3.5" /> Return to Sweet Aroma</Link>
       </div>
     </footer>
-    {previewPhoto && <div className="fixed inset-0 z-50 grid place-items-center bg-[#1b110b]/90 p-4 sm:p-8" role="dialog" aria-modal="true" aria-label={previewPhoto.title} onClick={() => setPreviewPhoto(null)}><button type="button" aria-label="Close image preview" onClick={() => setPreviewPhoto(null)} className="absolute right-4 top-4 grid size-11 place-items-center rounded-full border border-white/30 bg-black/30 text-white transition hover:bg-white/15 sm:right-8 sm:top-8"><X className="size-5" /></button><div className="relative h-[min(82vh,900px)] w-full max-w-[1280px]" onClick={(event) => event.stopPropagation()}><Image src={previewPhoto.src} alt={previewPhoto.alt} fill sizes="100vw" className="object-contain" /><p className="absolute inset-x-0 -bottom-8 text-center font-serif text-sm font-semibold text-white sm:-bottom-9 sm:text-base">{previewPhoto.title}</p></div></div>}
+    {previewPhoto && <div className="fixed inset-0 z-50 grid place-items-center bg-[#1b110b]/90 p-4 sm:p-8" role="dialog" aria-modal="true" aria-label={previewPhoto.title} onClick={() => setPreviewPhoto(null)}><button type="button" aria-label="Close image preview" onClick={() => setPreviewPhoto(null)} className="absolute right-4 top-4 grid size-11 place-items-center rounded-full border border-white/30 bg-black/30 text-white transition hover:bg-white/15 sm:right-8 sm:top-8"><X className="size-5" /></button><div className="a-modal-in relative h-[min(82vh,900px)] w-full max-w-[1280px]" onClick={(event) => event.stopPropagation()}><Image src={previewPhoto.src} alt={previewPhoto.alt} fill sizes="100vw" className="object-contain" /><p className="absolute inset-x-0 -bottom-8 text-center font-serif text-sm font-semibold text-white sm:-bottom-9 sm:text-base">{previewPhoto.title}</p></div></div>}
   </main>
   );
 };

@@ -6,5 +6,8 @@ export const createApiConfig = (environment: ValidatedApiEnvironment): ApiConfig
   port: environment.API_PORT,
   webOrigin: environment.WEB_ORIGIN,
   logLevel: environment.LOG_LEVEL,
-  ...(environment.MONGODB_URI ? { mongodbUri: environment.MONGODB_URI } : {})
+  ...(environment.MONGODB_URI ? { mongodbUri: environment.MONGODB_URI } : {}),
+  ...(environment.MONGODB_DNS_SERVERS
+    ? { mongodbDnsServers: environment.MONGODB_DNS_SERVERS.split(",").map((server) => server.trim()).filter(Boolean) }
+    : {})
 });

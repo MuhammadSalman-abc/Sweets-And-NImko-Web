@@ -6,12 +6,12 @@ import HomePage from "../../app/(public)/page";
 test("renders Sweet Aroma bakery, sweets and nimko shop", () => {
   const markup = renderToStaticMarkup(<HomePage />);
   assert.match(markup, /Sweet Aroma/);
-  assert.match(markup, /Bakery, Sweets &amp; Nimko Shop/);
-  assert.match(markup, /Popular Products/);
-  assert.match(markup, /Celebration Cake/);
-  assert.match(markup, /Mix Nimko/);
-  assert.match(markup, /Traditional Sweet Box/);
-  assert.match(markup, /Add to Cart/);
+  assert.match(markup, /Bakery &amp; Nimko Shop/);
+  assert.match(markup, /Popular picks/);
+  assert.match(markup, /Shop our menu/);
+  assert.match(markup, /Explore/);
+  assert.match(markup, /Add/);
   assert.match(markup, /Search products/);
+  assert.match(markup, /All products/);
   assert.doesNotMatch(markup, /goat herd management|care reminders|My herd/i);
 });

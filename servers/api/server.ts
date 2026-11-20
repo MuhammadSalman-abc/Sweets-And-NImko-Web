@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { setServers } from "node:dns";
 import { createLogger } from "@workspace/logging";
 import { createApp, createServer, createShutdown } from "./bootstrap/index.js";
 import { createApiConfig, readApiEnvironment } from "./config/index.js";
@@ -6,6 +7,7 @@ import { apiRuntime } from "./constants/index.js";
 import { createMongoDbIntegration } from "./integrations/index.js";
 
 const config = createApiConfig(readApiEnvironment());
+if (config.mongodbDnsServers?.length) setServers([...config.mongodbDnsServers]);
 const logger = createLogger({
   service: apiRuntime.serviceName,
   level: config.logLevel,

@@ -11,5 +11,6 @@ export const readApiEnvironment = (
   API_PORT: source.API_PORT,
   WEB_ORIGIN: source.WEB_ORIGIN,
   MONGODB_URI: source.MONGODB_URI,
+  MONGODB_DNS_SERVERS: source.MONGODB_DNS_SERVERS,
   LOG_LEVEL: source.LOG_LEVEL
 });
