@@ -80,6 +80,76 @@ main a.group {
   animation: aroma-float 6s ease-in-out infinite;
 }
 
+/* Small brand motion inside the existing bakery hero, not a separate section. */
+@keyframes aroma-hero-zoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.075); }
+}
+
+@keyframes aroma-hero-badge-enter {
+  from { opacity: 0; transform: translateY(-8px) scale(0.92); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes aroma-hero-mark-pulse {
+  0%, 100% { transform: scale(1) rotate(-8deg); }
+  50% { transform: scale(1.08) rotate(8deg); }
+}
+
+.aroma-hero-image-active {
+  animation: aroma-hero-zoom 6s cubic-bezier(0.15, 0.65, 0.25, 1) both;
+}
+
+.aroma-hero-badge {
+  position: absolute;
+  z-index: 5;
+  top: 18px;
+  right: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 13px 6px 6px;
+  border: 1px solid rgb(255 255 255 / 55%);
+  border-radius: 999px;
+  background: rgb(255 250 242 / 94%);
+  box-shadow: 0 12px 30px rgb(50 27 16 / 18%);
+  backdrop-filter: blur(12px);
+  animation: aroma-hero-badge-enter 600ms 250ms both;
+}
+
+.aroma-hero-badge-mark {
+  position: relative;
+  display: grid;
+  width: 34px;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  background: #df8b72;
+  color: #fffaf2;
+  animation: aroma-hero-mark-pulse 3.4s ease-in-out infinite;
+}
+
+.aroma-hero-badge-mark::after {
+  position: absolute;
+  inset: -4px;
+  border: 1px solid rgb(223 139 114 / 45%);
+  border-radius: inherit;
+  content: "";
+  animation: aroma-hero-mark-pulse 3.4s 170ms ease-in-out infinite reverse;
+}
+
+.aroma-hero-badge-copy b,
+.aroma-hero-badge-copy small { display: block; }
+.aroma-hero-badge-copy b { color: #4b2b19; font-family: Georgia, serif; font-size: 11px; }
+.aroma-hero-badge-copy small { margin-top: 2px; color: #8d6845; font-size: 8px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; }
+
+@media (max-width: 639px) {
+  .aroma-hero-badge { top: 12px; right: 12px; gap: 6px; padding: 5px 10px 5px 5px; }
+  .aroma-hero-badge-mark { width: 29px; }
+  .aroma-hero-badge-copy b { font-size: 10px; }
+  .aroma-hero-badge-copy small { font-size: 7px; }
+}
+
 /* Sequential reveal for repeated children (grid/list). Uses fill-mode
  * `backwards` so the finished element returns to its natural styles and
  * keeps working with hover transforms (e.g. group-hover translate/scale). */
